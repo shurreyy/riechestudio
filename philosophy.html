@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RIECHE Philosophy - Pilates Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* The Seasons Font */
+        @font-face {
+            font-family: 'The Seasons';
+            src: url('/public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788-webfont.woff2') format('woff2'),
+                 url('/public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788-webfont.woff') format('woff'),
+                 url('/public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            font-family: 'Inter', sans-serif;
+            background: #D9DED8;
+            color: black;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        .navigation {
+            width: 100%;
+            height: 164px;
+            background: #D9DED8;
+            padding: 0 67px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-main {
+            font-family: 'The Seasons', serif;
+            font-size: 61.28px;
+            font-weight: 400;
+            line-height: 55.15px;
+            color: black;
+        }
+
+        .logo-sub {
+            font-family: 'The Seasons', serif;
+            font-size: 36.46px;
+            font-weight: 400;
+            line-height: 32.81px;
+            color: black;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 48px;
+        }
+
+        .nav-link {
+            font-size: 20px;
+            font-weight: 500;
+            color: black;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-link:hover {
+            opacity: 0.7;
+        }
+
+        .contact-button {
+            padding: 14px 24px;
+            background: black;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .contact-button:hover {
+            background: #333;
+            transform: translateY(-1px);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            height: 100vh;
+            background-image: url('/public/assets/images/IMG_Foliage.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.24);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 733px;
+            padding: 0 20px;
+        }
+
+        .hero-title {
+            font-size: 64px;
+            font-weight: 700;
+            color: #D9D9D9;
+            margin-bottom: 24px;
+            text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        .hero-subtitle {
+            font-size: 24px;
+            font-weight: 400;
+            color: #E0E0E0;
+            margin-bottom: 40px;
+            text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        .story-intro {
+            font-size: 20px;
+            font-weight: 500;
+            color: #D9D9D9;
+            margin-top: 60px;
+        }
+
+        /* Content Sections */
+        .content-section {
+            max-width: 842px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .story-section {
+            padding: 60px 20px;
+        }
+
+        .story-text {
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 30px;
+            margin-bottom: 40px;
+        }
+
+        .story-text em {
+            font-style: italic;
+            font-weight: 700;
+        }
+
+        .story-text .highlight {
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .large-initial {
+            font-family: 'The Seasons', serif;
+            font-size: 135px;
+            font-weight: 400;
+            line-height: 135px;
+            float: left;
+            margin-right: 10px;
+            margin-top: -20px;
+        }
+
+        .depressing-note {
+            color: #5B6D36;
+            font-style: italic;
+            font-weight: 500;
+            text-align: right;
+            margin: 40px 0;
+            font-size: 20px;
+        }
+
+        /* Pillars Section */
+        .pillars-title {
+            font-family: 'The Seasons', serif;
+            font-size: 45.61px;
+            font-weight: 400;
+            line-height: 41.05px;
+            margin: 60px 0 40px 0;
+            text-align: left;
+        }
+
+        .pillar {
+            margin-bottom: 40px;
+        }
+
+        .pillar-title {
+            font-size: 23px;
+            font-weight: 700;
+            line-height: 34.5px;
+            margin-bottom: 10px;
+        }
+
+        .pillar-text {
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 30px;
+        }
+
+        /* Image Gallery */
+        .image-gallery {
+            display: flex;
+            gap: 32px;
+            margin: 80px 0;
+            justify-content: center;
+        }
+
+        .gallery-image {
+            width: 624px;
+            height: 436px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(159, 139, 127, 0.2);
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .welcome-title {
+            font-family: 'The Seasons', serif;
+            font-size: 45.61px;
+            font-weight: 400;
+            line-height: 59.29px;
+        }
+
+        /* Ending Section */
+        .ending-section {
+            text-align: right;
+            max-width: 842px;
+            margin: 0 auto;
+            padding: 40px 20px 80px 20px;
+        }
+
+        .ending-text {
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 30px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navigation {
+                padding: 0 20px;
+                height: 120px;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+
+            .nav-link {
+                font-size: 16px;
+            }
+
+            .logo-main {
+                font-size: 40px;
+                line-height: 36px;
+            }
+
+            .logo-sub {
+                font-size: 24px;
+                line-height: 22px;
+            }
+
+            .hero-title {
+                font-size: 40px;
+            }
+
+            .hero-subtitle {
+                font-size: 18px;
+            }
+
+            .large-initial {
+                font-size: 80px;
+                line-height: 80px;
+            }
+
+            .image-gallery {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .gallery-image {
+                width: 100%;
+                max-width: 500px;
+            }
+
+            .content-section {
+                padding: 40px 20px;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navigation">
+        <div class="logo">
+            <div class="logo-main">RIECHE</div>
+            <div class="logo-sub">Pilates Studio</div>
+        </div>
+        <div class="nav-links">
+            <a href="#philosophy" class="nav-link">Rieche Philosophy</a>
+            <a href="#membership" class="nav-link">Membership & Passes</a>
+            <a href="#contact" class="contact-button">Contact us</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Our Philosophy</h1>
+            <p class="hero-subtitle">
+                What if I told you that you could achieve everything you want without pain and sacrifice? 
+                What if growing into yourself could be frictionless and genuine?
+            </p>
+            <p class="story-intro">
+                All good brand manifestos begin with a story.<br>
+                Let me tell you the story of a humble farmer to illustrate my point.
+            </p>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="story-section fade-in">
+        <div class="content-section">
+            <div class="story-text">
+                <span class="large-initial">O</span>nce upon a time, there was a farmer. She was an ambitious one.<br>
+                Driven, hard-working, and full of hope. All the characteristics of a great farmer. She dreamed of crops that would grow faster, fuller, taller, lusher, more vibrant, more resilient, more abundant, more beautiful, more <em>perfect</em> than anyone else's.<br>
+                She wanted it all, and she wanted it now.<br>
+                As it often does, her ambition came at the price of impatience.<br><br>
+
+                At first, she did everything she was supposed to: she watered her crops, she cleared the weeds, she gave them light and space. But that wasn't enough for her. "I thought I was doing everything I'm supposed to. Why isn't anything happening?" she thought to herself.<br>
+                She sat in the fields for hours, watching, worrying. Still, her crops grew at their own slow and steady pace. The stillness of growth made her anxious.<br><br>
+
+                So she decided to take matters into her own hands. "If I help them along," she thought, "surely they'll reach their potential faster." Every morning, she would gently pull on each seedling, carefully trying to stretch them taller, trying to guide them towards the perfection she craved.<br><br>
+
+                That night, she fell asleep exhausted but satisfied.<br>
+                She had worked harder than anyone else.<br>
+                Surely tomorrow, her effort would bloom into her vision.<br><br>
+
+                <em>But the next morning, her entire field had withered.</em>
+            </div>
+
+            <div class="depressing-note">Well that was depressing...</div>
+
+            <div class="story-text">
+                But isn't this exactly what we do to ourselves?<br><br>
+
+                We stretch ourselves thin.<br>
+                We push our bodies through burnout.<br>
+                We force progress because we're afraid we're falling behind.<br>
+                And then we wonder why we feel disconnected, tired, resentful...<br>
+                even after doing <em>everything right</em>.
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy Section -->
+    <section class="content-section fade-in">
+        <div class="story-text">
+            Rieche is about finding harmony. With yourself. With others. With the world around you.<br><br>
+
+            We believe in working smarter, not harder. Unless you're a total masochist (and hey, no judgment), why would you choose suffering when you could let things come together naturally?<br>
+            This is a space for women to find themselves. To feel at home in their bodies. At peace with their minds. In harmony with their ambitions.<br>
+            We don't believe in punishing yourself into shape. We believe in loving yourself into strength.
+        </div>
+
+        <h2 class="pillars-title">The RIECHE Pillars</h2>
+
+        <div class="pillar">
+            <h3 class="pillar-title">Intensity meets precision.</h3>
+            <p class="pillar-text">
+                We're not here for mindless movement or empty burn. Every class is designed with intention. Every movement has purpose. You'll work—but you'll work intelligently. You'll understand every part of your body intimately, every muscle, every joint, how it can move in ways you didn't know were possible. You'll get that burn with finesse.
+            </p>
+        </div>
+
+        <div class="pillar">
+            <h3 class="pillar-title">Women first.</h3>
+            <p class="pillar-text">
+                This space was built with women in mind.<br>
+                Your rhythms, your strength, your safety. We center all women, including non-binary, trans, non-cis, and all women-identified persons. This is your studio. Your body. Your bloom.
+            </p>
+        </div>
+
+        <div class="pillar">
+            <h3 class="pillar-title">Results without brutality.</h3>
+            <p class="pillar-text">
+                Work with your body, not against it. If you're recovering from an injury, honor that. Do the modified version. I promise, you'll get the same results. You're not missing out. You're not behind. Your body knows what it needs and we're here to help you listen and reconnect.
+            </p>
+        </div>
+
+        <div class="ending-section">
+            <p class="ending-text">Alright, that's enough. Why say lot words when few do trick.</p>
+        </div>
+    </section>
+
+    <!-- Image Gallery -->
+    <section class="image-gallery fade-in">
+        <div class="gallery-image">
+            <img src="/public/assets/images/IMG_Foliage.jpg" alt="RIECHE Studio Interior">
+        </div>
+        <div class="gallery-image">
+            <img src="/public/assets/images/IMG_Foliage.jpg" alt="Pilates Equipment">
+        </div>
+    </section>
+
+    <!-- Personal Story Section -->
+    <section class="content-section fade-in">
+        <div class="story-text">
+            You've probably been there. We all have.<br><br>
+
+            Putting tireless effort into something you've just got a feeling isn't yielding any fruit? Stayed in a relationship or friendship you just knew wasn't right for you because you thought this was the best you could do? Ever pushed through a career or a degree because it's what people told you "should" do? Followed a rigid morning routine because a podcast told you it would ✨optimize" your life✨ but all it optimized was your cortisol?<br>
+            Have you ever continued reading a book or watching a show you weren't enjoying just because you wanted to finish it?<br>
+            Have you ever pushed through pain in a class or during a run because stopping would mean "you're a quitter"?<br><br>
+
+            <strong>Have you ever worked so hard toward a goal that you started resenting the very thing you thought you wanted?</strong>
+        </div>
+
+        <div class="story-text">
+            I know...<br>
+            It sucks.<br>
+            It sucks especially because you're trying so hard, and yet nothing. It's like swimming against the tide, or like pulling on seedlings hoping they'll grow faster.<br><br><br><br><br>
+
+            We've created this interesting <span class="highlight">(and lowkey useless)</span> narrative that suffering equals virtue. That if it doesn't hurt, you're not doing it right or that hardship is the only path to growth. Or that pain and sacrifice are prerequisites for success.<br>
+            But what if that's just... wrong?
+        </div>
+    </section>
+
+    <!-- Welcome Section -->
+    <section class="welcome-section fade-in">
+        <h2 class="welcome-title">
+            Welcome to RIECHE.<br>
+            And more importantly, welcome to yourself.
+        </h2>
+    </section>
+
+    <script>
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add parallax effect to hero section
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero-section');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Performance optimization for animations
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        if (prefersReducedMotion.matches) {
+            document.documentElement.style.setProperty('--animation-duration', '0s');
+        }

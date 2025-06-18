@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RIECHE Pilates Studio - Coming Soon</title>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://brandedweb.mindbodyonline.com;">
+    
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; frame-src 'self' https:;">-->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* The Seasons Font - Corrected paths for Vercel */
@@ -37,7 +38,7 @@
             height: 100vh;
             position: relative;
             background: linear-gradient(135deg, rgba(20, 20, 40, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%);
-            background-image: url('public/assets/images/IMG_Foliage.jpg');
+            background-image: url('/public/assets/images/IMG_Foliage.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -48,7 +49,7 @@
             overflow: hidden;
         }
 
-        /* Animated gradient overlay */
+        /* Dimmer overlay for better text visibility */
         .hero-container::before {
             content: '';
             position: absolute;
@@ -57,10 +58,10 @@
             right: 0;
             bottom: 0;
             background: linear-gradient(45deg, 
-                rgba(144, 142, 244, 0.1) 0%, 
-                rgba(0, 0, 0, 0.4) 30%, 
-                rgba(20, 20, 40, 0.6) 70%, 
-                rgba(144, 142, 244, 0.1) 100%);
+                rgba(144, 142, 244, 0.15) 0%, 
+                rgba(0, 0, 0, 0.6) 30%, 
+                rgba(20, 20, 40, 0.75) 70%, 
+                rgba(144, 142, 244, 0.15) 100%);
             animation: gradientShift 8s ease-in-out infinite;
             z-index: 1;
         }
@@ -109,6 +110,8 @@
             text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
             animation: textGlow 3s ease-in-out infinite alternate;
             letter-spacing: -0.02em;
+            width: 100%;
+            text-align: center;
         }
 
         .brand-sub {
@@ -122,6 +125,8 @@
             -webkit-text-fill-color: transparent;
             animation: textGlow 3s ease-in-out infinite alternate 0.5s;
             letter-spacing: 0.02em;
+            width: 100%;
+            text-align: center;
         }
 
         @keyframes textGlow {
@@ -148,207 +153,138 @@
             to { opacity: 1; }
         }
 
-        /* Premium email form */
-        .email-section {
-            margin-bottom: 40px;
-            animation: slideUp 1s ease-out 1s both;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .email-form {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .email-input-wrapper {
+        /* MindBody Widget Container */
+        .cta-container {
+            margin-top: 40px;
+            width: 100%;
+            max-width: 600px;
+            z-index: 10;
             position: relative;
-            overflow: hidden;
         }
 
-        .email-input-container {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 60px;
-            padding: 16px 28px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            min-width: 320px;
+        /* Custom MindBody Widget Styling - Updated for all fields */
+        .healcode.prospect {
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
         }
 
-        .email-input-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.5s;
+        /* Style ALL input fields (First Name, Last Name, Email) */
+        .hc-prospect-field input[type="text"],
+        .hc-prospect-email input[type="text"],
+        .hc-prospect-first-name input[type="text"],
+        .hc-prospect-last-name input[type="text"] {
+            background: rgba(255, 255, 255, 0.15) !important;
+            border: 1px solid rgba(255, 255, 255, 0.35) !important;
+            border-radius: 60px !important;
+            padding: 18px 28px !important;
+            color: white !important;
+            font-size: 16px !important;
+            font-family: 'Inter', sans-serif !important;
+            font-weight: 400 !important;
+            width: 100% !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            box-sizing: border-box !important;
+            outline: none !important;
+            margin-bottom: 15px !important;
         }
 
-        .email-input-container:hover::before {
-            left: 100%;
+        /* Input placeholders for ALL fields */
+        .hc-prospect-field input[type="text"]::placeholder,
+        .hc-prospect-email input[type="text"]::placeholder,
+        .hc-prospect-first-name input[type="text"]::placeholder,
+        .hc-prospect-last-name input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.7) !important;
         }
 
-        .email-input-container:hover,
-        .email-input-container:focus-within {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.4);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        /* Input focus states for ALL fields */
+        .hc-prospect-field input[type="text"]:focus,
+        .hc-prospect-email input[type="text"]:focus,
+        .hc-prospect-first-name input[type="text"]:focus,
+        .hc-prospect-last-name input[type="text"]:focus {
+            background: rgba(255, 255, 255, 0.25) !important;
+            border-color: rgba(255, 255, 255, 0.6) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3) !important;
         }
 
-        .email-input {
-            background: transparent;
-            border: none;
-            outline: none;
-            color: white;
-            font-size: 18px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 400;
-            width: 100%;
-            padding: 0;
+        /* Layout for ALL fields - stacked and centered */
+        .hc-prospect-first-name,
+        .hc-prospect-last-name,
+        .hc-prospect-email {
+            width: 100% !important;
+            max-width: 400px !important;
+            display: block !important;
+            margin: 0 auto 15px auto !important;
         }
 
-        .email-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-            transition: color 0.3s ease;
+        /* Style the submit button */
+        .hc-actions input[type="submit"] {
+            background: rgba(255, 255, 255, 0.08) !important;
+            border: 1px solid rgba(255, 255, 255, 0.25) !important;
+            border-radius: 60px !important;
+            padding: 18px 36px !important;
+            color: white !important;
+            font-size: 18px !important;
+            font-family: 'Inter', sans-serif !important;
+            font-weight: 500 !important;
+            cursor: pointer !important;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            min-width: 160px !important;
+            margin-top: 20px !important;
         }
 
-        .email-input:focus::placeholder {
-            color: rgba(255, 255, 255, 0.4);
+        /* Submit button hover effect */
+        .hc-actions input[type="submit"]:hover {
+            background: rgba(255, 255, 255, 0.15) !important;
+            border-color: rgba(255, 255, 255, 0.4) !important;
+            transform: translateY(-3px) !important;
+            box-shadow: 0 15px 50px rgba(255, 255, 255, 0.1) !important;
         }
 
-        /* Stunning submit button */
-        .submit-btn {
-            background: linear-gradient(135deg, rgba(144, 142, 244, 0.8) 0%, rgba(144, 142, 244, 0.6) 100%);
-            border: 1px solid rgba(144, 142, 244, 0.4);
-            border-radius: 60px;
-            padding: 18px 36px;
-            color: white;
-            font-size: 18px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            position: relative;
-            overflow: hidden;
-            min-width: 160px;
+        /* Style the form container */
+        .hc_prospect {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            width: 100% !important;
         }
 
-        .submit-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
+        /* HIDE MindBody watermark completely */
+        .hc-privacy-footer img {
+            display: none !important;
         }
 
-        .submit-btn:hover::before {
-            left: 100%;
+        /* Style just the privacy policy link */
+        .hc-privacy-footer {
+            margin-top: 20px !important;
+            text-align: center !important;
         }
 
-        .submit-btn:hover {
-            background: linear-gradient(135deg, rgba(144, 142, 244, 1) 0%, rgba(144, 142, 244, 0.8) 100%);
-            border-color: rgba(144, 142, 244, 0.8);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 50px rgba(144, 142, 244, 0.4);
+        .privacy-policy-link {
+            color: rgba(255, 255, 255, 0.5) !important;
+            text-decoration: none !important;
+            font-size: 12px !important;
+            font-family: 'Inter', sans-serif !important;
         }
 
-        .submit-btn:active {
-            transform: translateY(-1px);
+        .privacy-policy-link:hover {
+            color: rgba(255, 255, 255, 0.7) !important;
         }
 
-        /* Success message */
-        .success-message {
-            position: fixed;
-            top: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(144, 142, 244, 0.95);
-            color: white;
-            padding: 20px 40px;
-            border-radius: 50px;
-            font-weight: 500;
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1000;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
+        /* Mobile responsive - remove since all fields are now stacked */
 
-        .success-message.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(10px);
-        }
-
-        /* Floating particles effect */
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px) rotate(0deg);
-                opacity: 0;
-            }
-            10%, 90% {
-                opacity: 1;
-            }
-            50% {
-                transform: translateY(-100px) rotate(180deg);
-                opacity: 0.7;
-            }
-        }
+        /* Floating particles effect - REMOVED */
 
         /* Responsive design */
         @media (max-width: 768px) {
-            .email-form {
-                flex-direction: column;
-                gap: 20px;
+            .cta-container {
                 padding: 0 20px;
-            }
-
-            .email-input-container,
-            .submit-btn {
-                width: 100%;
-                max-width: 350px;
+                max-width: 90%;
             }
 
             .brand-container {
@@ -370,9 +306,6 @@
 </head>
 <body>
     <div class="hero-container">
-        <!-- Floating particles -->
-        <div class="particles"></div>
-        
         <div class="content">
             <div class="brand-container">
                 <div class="brand-main">RIECHE</div>
@@ -383,26 +316,16 @@
                 Transform your body, elevate your mind
             </div>
             
-            <div class="email-section">
-                <form class="email-form" id="emailForm">
-                    <div class="email-input-wrapper">
-                        <div class="email-input-container">
-                            <input 
-                                type="email" 
-                                class="email-input" 
-                                placeholder="Enter your email for early access" 
-                                required
-                                id="emailInput"
-                            >
-                        </div>
-                    </div>
-                    <button type="submit" class="submit-btn">Get Notified</button>
-                </form>
+            <!-- MindBody Widget Integration -->
+            <div class="cta-container">
+                <script src="https://widgets.mindbodyonline.com/javascripts/healcode.js" type="text/javascript"></script>
+                <healcode-widget 
+                    data-type="prospects" 
+                    data-widget-partner="object" 
+                    data-widget-id="7a58492f6c2" 
+                    data-widget-version="0">
+                </healcode-widget>
             </div>
-        </div>
-        
-        <div class="success-message" id="successMessage">
-            ✨ Thank you! We'll notify you when we launch
         </div>
     </div>
 
@@ -422,66 +345,40 @@
             }
         }
 
-        // Email form functionality
-        const emailForm = document.getElementById('emailForm');
-        const emailInput = document.getElementById('emailInput');
-        const successMessage = document.getElementById('successMessage');
-        
-        let collectedEmails = [];
-
-        emailForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+        // Check if MindBody widget loads, show fallback if not
+        setTimeout(function() {
+            const widget = document.querySelector('healcode-widget');
+            const fallback = document.getElementById('widget-fallback');
             
-            const email = emailInput.value.trim();
-            
-            if (email && isValidEmail(email)) {
-                // Store email
-                collectedEmails.push({
-                    email: email,
-                    timestamp: new Date().toISOString()
-                });
-                
-                // Show success message
-                showSuccessMessage();
-                
-                // Reset form with animation
-                emailInput.value = '';
-                
-                // Log for testing
-                console.log('Email collected:', email);
-                console.log('Total emails:', collectedEmails.length);
+            // If widget is empty or hasn't loaded content, show fallback
+            if (!widget || widget.innerHTML.trim() === '' || !widget.querySelector('iframe')) {
+                console.log('MindBody widget failed to load, showing fallback');
+                if (fallback) {
+                    fallback.style.display = 'block';
+                }
+            } else {
+                console.log('MindBody widget loaded successfully');
             }
-        });
-
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-
-        function showSuccessMessage() {
-            successMessage.classList.add('show');
-            
-            setTimeout(() => {
-                successMessage.classList.remove('show');
-            }, 5000);
-        }
-
-        // Enhanced form interactions
-        const emailContainer = document.querySelector('.email-input-container');
-        const emailInputField = document.getElementById('emailInput');
-
-        emailInputField.addEventListener('focus', function() {
-            emailContainer.style.background = 'rgba(255, 255, 255, 0.15)';
-            emailContainer.style.borderColor = 'rgba(255, 255, 255, 0.5)';
-        });
-
-        emailInputField.addEventListener('blur', function() {
-            emailContainer.style.background = 'rgba(255, 255, 255, 0.08)';
-            emailContainer.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-        });
+        }, 3000); // Wait 3 seconds for widget to load
 
         // Initialize particles
         createParticles();
+
+        // Enhanced animations and interactions
+        window.addEventListener('load', function() {
+            // Animate elements on load
+            const content = document.querySelector('.content');
+            content.style.animation = 'fadeInUp 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+            
+            // Add subtle mouse parallax effect
+            document.addEventListener('mousemove', function(e) {
+                const mouseX = e.clientX / window.innerWidth;
+                const mouseY = e.clientY / window.innerHeight;
+                
+                const heroContainer = document.querySelector('.hero-container');
+                heroContainer.style.transform = `translate(${mouseX * 10}px, ${mouseY * 10}px)`;
+            });
+        });
 
         // Smooth scroll prevention
         document.addEventListener('wheel', function(e) {

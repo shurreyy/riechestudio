@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - RIECHE Pilates Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* The Seasons Font */
+        @font-face {
+            font-family: 'The Seasons';
+            src: url('/public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788-webfont.woff2') format('woff2'),
+                 url('/public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788-webfont.woff') format('woff'),
+                 url('/public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background: #0a0a0a;
+        }
+
+        /* Main container with stunning background */
+        .hero-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background: linear-gradient(135deg, rgba(20, 20, 40, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%);
+            background-image: url('/public/assets/images/IMG_Foliage.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Dimmer overlay for better text visibility */
+        .hero-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                rgba(144, 142, 244, 0.15) 0%, 
+                rgba(0, 0, 0, 0.6) 30%, 
+                rgba(20, 20, 40, 0.75) 70%, 
+                rgba(144, 142, 244, 0.15) 100%);
+            animation: gradientShift 8s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Content wrapper */
+        .content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            color: white;
+            animation: fadeInUp 1.2s ease-out;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Brand typography */
+        .brand-container {
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .brand-main {
+            font-family: 'The Seasons', 'Playfair Display', serif;
+            font-size: clamp(60px, 10vw, 120px);
+            font-weight: 400;
+            line-height: 0.9;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 50%, #e0e0e0 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            animation: textGlow 3s ease-in-out infinite alternate;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-sub {
+            font-family: 'The Seasons', 'Playfair Display', serif;
+            font-size: clamp(35px, 6vw, 70px);
+            font-weight: 400;
+            line-height: 0.9;
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textGlow 3s ease-in-out infinite alternate 0.5s;
+            letter-spacing: 0.02em;
+            margin-bottom: 30px;
+        }
+
+        @keyframes textGlow {
+            from {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            }
+            to {
+                text-shadow: 0 0 40px rgba(255, 255, 255, 0.4), 0 0 60px rgba(144, 142, 244, 0.2);
+            }
+        }
+
+        /* Thank you message */
+        .thank-you-message {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            animation: fadeIn 1.5s ease-out 0.5s both;
+        }
+
+        .thank-you-title {
+            font-size: clamp(28px, 4vw, 48px);
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .thank-you-text {
+            font-size: clamp(16px, 2.5vw, 20px);
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* CTA Button */
+        .cta-button {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 60px;
+            padding: 18px 36px;
+            color: white;
+            font-size: 18px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            margin: 10px;
+        }
+
+        .cta-button:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(255, 255, 255, 0.1);
+        }
+
+        .cta-button.primary {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .cta-button.primary:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Floating animation */
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .thank-you-message {
+                padding: 30px 20px;
+                margin: 0 10px 40px 10px;
+            }
+            
+            .cta-button {
+                padding: 15px 30px;
+                font-size: 16px;
+                display: block;
+                margin: 10px auto;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-container">
+        <div class="content">
+            <div class="brand-container floating">
+                <div class="brand-main">RIECHE</div>
+                <div class="brand-sub">Pilates Studio</div>
+            </div>
+            
+            <div class="thank-you-message">
+                <div class="thank-you-title">Welcome to Your Journey ✨</div>
+                <div class="thank-you-text">
+                    Thank you for joining our community! We're thrilled to have you on this path of transformation. 
+                    You'll receive updates about our studio opening, exclusive early access to classes, and insights into our philosophy of growth without suffering.
+                </div>
+                <div class="thank-you-text">
+                    While you wait, discover what makes RIECHE different and why we believe in working with your body, not against it.
+                </div>
+                
+                <a href="/philosophy" class="cta-button primary">Discover Our Philosophy</a>
+                <a href="/" class="cta-button">Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced animations and interactions
+        window.addEventListener('load', function() {
+            // Add subtle mouse parallax effect
+            document.addEventListener('mousemove', function(e) {
+                const mouseX = e.clientX / window.innerWidth;
+                const mouseY = e.clientY / window.innerHeight;
+                
+                const heroContainer = document.querySelector('.hero-container');
+                heroContainer.style.transform = `translate(${mouseX * 5}px, ${mouseY * 5}px)`;
+            });
+        });
+
+        // Performance optimization for animations
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        if (prefersReducedMotion.matches) {
+            document.documentElement.style.setProperty('--animation-duration', '0s');
+        }
+    </script>
+</body>
+</html>

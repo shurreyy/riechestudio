@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RIECHE Pilates Studio - Coming Soon</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://brandedweb.mindbodyonline.com;">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* The Seasons Font - Using your uploaded files */
+        @font-face {
+            font-family: 'The Seasons';
+            src: url('public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788-webfont.woff2') format('woff2'),
+                 url('public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788-webfont.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        * {
+            margin: 0;
+            padding: 5;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            background: #0a0a0a;
+        }
+
+        /* Main container with stunning background */
+        .hero-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background: linear-gradient(135deg, rgba(20, 20, 40, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%);
+            background-image: url('public/assets/images/IMG_Foliage.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Animated gradient overlay */
+        .hero-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                rgba(135, 133, 240, 0.1) 0%, 
+                rgba(0, 0, 0, 0.4) 30%, 
+                rgba(20, 20, 40, 0.6) 70%, 
+                rgba(144, 142, 244, 0.1) 100%);
+            animation: gradientShift 8s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Content wrapper */
+        .content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            color: white;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Brand typography */
+        .brand-container {
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .brand-main {
+            font-family: 'The Seasons', 'Playfair Display', serif;
+            font-size: clamp(80px, 12vw, 180px);
+            font-weight: 400;
+            line-height: 0.9;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 50%, #e0e0e0 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            animation: textGlow 3s ease-in-out infinite alternate;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-sub {
+            font-family: 'The Seasons', 'Playfair Display', serif;
+            font-size: clamp(45px, 7vw, 100px);
+            font-weight: 400;
+            line-height: 0.9;
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textGlow 3s ease-in-out infinite alternate 0.5s;
+            letter-spacing: 0.02em;
+        }
+
+        @keyframes textGlow {
+            from {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            }
+            to {
+                text-shadow: 0 0 40px rgba(255, 255, 255, 0.4), 0 0 60px rgba(144, 142, 244, 0.2);
+            }
+        }
+
+        /* Elegant tagline */
+        .tagline {
+            font-size: clamp(18px, 2.5vw, 32px);
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 50px;
+            letter-spacing: 0.5px;
+            animation: fadeIn 1.5s ease-out 0.5s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Premium email form */
+        .email-section {
+            margin-bottom: 40px;
+            animation: slideUp 1s ease-out 1s both;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .email-form {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .email-input-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .email-input-container {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 60px;
+            padding: 16px 28px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            min-width: 320px;
+        }
+
+        .email-input-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .email-input-container:hover::before {
+            left: 100%;
+        }
+
+        .email-input-container:hover,
+        .email-input-container:focus-within {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .email-input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            font-size: 18px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            width: 100%;
+            padding: 0;
+        }
+
+        .email-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            transition: color 0.3s ease;
+        }
+
+        .email-input:focus::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Stunning submit button */
+        .submit-btn {
+            background: linear-gradient(135deg, rgba(144, 142, 244, 0.8) 0%, rgba(144, 142, 244, 0.6) 100%);
+            border: 1px solid rgba(144, 142, 244, 0.4);
+            border-radius: 60px;
+            padding: 18px 36px;
+            color: white;
+            font-size: 18px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+            min-width: 160px;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, rgba(144, 142, 244, 1) 0%, rgba(144, 142, 244, 0.8) 100%);
+            border-color: rgba(144, 142, 244, 0.8);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(144, 142, 244, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Success message */
+        .success-message {
+            position: fixed;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(144, 142, 244, 0.95);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-weight: 500;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .success-message.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(10px);
+        }
+
+        /* Floating particles effect */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-100px) rotate(180deg);
+                opacity: 0.7;
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .email-form {
+                flex-direction: column;
+                gap: 20px;
+                padding: 0 20px;
+            }
+
+            .email-input-container,
+            .submit-btn {
+                width: 100%;
+                max-width: 350px;
+            }
+
+            .brand-container {
+                margin-bottom: 40px;
+            }
+
+            .tagline {
+                margin-bottom: 40px;
+                padding: 0 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                padding: 0 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-container">
+        <!-- Floating particles -->
+        <div class="particles"></div>
+        
+        <div class="content">
+            <div class="brand-container">
+                <div class="brand-main">RIECHE</div>
+                <div class="brand-sub">Pilates Studio</div>
+            </div>
+            
+            <div class="tagline">
+                Transform your body, elevate your mind
+            </div>
+            
+            <div class="email-section">
+                <form class="email-form" id="emailForm">
+                    <div class="email-input-wrapper">
+                        <div class="email-input-container">
+                            <input 
+                                type="email" 
+                                class="email-input" 
+                                placeholder="Enter your email for early access" 
+                                required
+                                id="emailInput"
+                            >
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn">Get Notified</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            ✨ Thank you! We'll notify you when we launch
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.querySelector('.particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Email form functionality
+        const emailForm = document.getElementById('emailForm');
+        const emailInput = document.getElementById('emailInput');
+        const successMessage = document.getElementById('successMessage');
+        
+        let collectedEmails = [];
+
+        emailForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = emailInput.value.trim();
+            
+            if (email && isValidEmail(email)) {
+                // Store email
+                collectedEmails.push({
+                    email: email,
+                    timestamp: new Date().toISOString()
+                });
+                
+                // Show success message
+                showSuccessMessage();
+                
+                // Reset form with animation
+                emailInput.value = '';
+                
+                // Log for testing
+                console.log('Email collected:', email);
+                console.log('Total emails:', collectedEmails.length);
+            }
+        });
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function showSuccessMessage() {
+            successMessage.classList.add('show');
+            
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 5000);
+        }
+
+        // Enhanced form interactions
+        const emailContainer = document.querySelector('.email-input-container');
+        const emailInputField = document.getElementById('emailInput');
+
+        emailInputField.addEventListener('focus', function() {
+            emailContainer.style.background = 'rgba(255, 255, 255, 0.15)';
+            emailContainer.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+        });
+
+        emailInputField.addEventListener('blur', function() {
+            emailContainer.style.background = 'rgba(255, 255, 255, 0.08)';
+            emailContainer.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+        });
+
+        // Initialize particles
+        createParticles();
+
+        // Smooth scroll prevention
+        document.addEventListener('wheel', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        // Performance optimization for animations
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        if (prefersReducedMotion.matches) {
+            document.documentElement.style.setProperty('--animation-duration', '0s');
+        }
+    </script>
+</body>
+</html>

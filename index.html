@@ -57,10 +57,10 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(45deg, 
+            background: linear-gradient(135deg, 
                 rgba(144, 142, 244, 0.15) 0%, 
-                rgba(0, 0, 0, 0.6) 30%, 
-                rgba(20, 20, 40, 0.75) 70%, 
+                rgba(0, 0, 0, 0.75) 20%, 
+                rgba(20, 20, 40, 0.85) 70%, 
                 rgba(144, 142, 244, 0.15) 100%);
             animation: gradientShift 8s ease-in-out infinite;
             z-index: 1;
@@ -99,7 +99,7 @@
 
         .brand-main {
             font-family: 'The Seasons', 'Playfair Display', serif;
-            font-size: clamp(80px, 12vw, 180px);
+            font-size: clamp(60px, 10vw, 140px);
             font-weight: 400;
             line-height: 0.9;
             margin-bottom: 15px;
@@ -116,7 +116,7 @@
 
         .brand-sub {
             font-family: 'The Seasons', 'Playfair Display', serif;
-            font-size: clamp(45px, 7vw, 100px);
+            font-size: clamp(35px, 6vw, 80px);
             font-weight: 400;
             line-height: 0.9;
             background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
@@ -140,7 +140,7 @@
 
         /* Elegant tagline */
         .tagline {
-            font-size: clamp(18px, 2.5vw, 32px);
+            font-size: clamp(16px, 2vw, 28px);
             font-weight: 300;
             color: rgba(255, 255, 255, 0.9);
             margin-bottom: 50px;
@@ -174,17 +174,17 @@
         .hc-prospect-email input[type="text"],
         .hc-prospect-first-name input[type="text"],
         .hc-prospect-last-name input[type="text"] {
-            background: rgba(255, 255, 255, 0.15) !important;
+            background: rgba(255, 255, 255, 0.25) !important;
             border: 1px solid rgba(255, 255, 255, 0.35) !important;
             border-radius: 60px !important;
-            padding: 18px 28px !important;
+            padding: clamp(14px, 2vw, 18px) clamp(20px, 3vw, 28px) !important;
             color: white !important;
-            font-size: 16px !important;
+            font-size: clamp(14px, 1.5vw, 16px) !important;
             font-family: 'Inter', sans-serif !important;
             font-weight: 400 !important;
             width: 100% !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
+            backdrop-filter: blur(1px) !important;
+            -webkit-backdrop-filter: blur(1px) !important;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
             box-sizing: border-box !important;
             outline: none !important;
@@ -222,18 +222,18 @@
 
         /* Style the submit button */
         .hc-actions input[type="submit"] {
-            background: rgba(255, 255, 255, 0.08) !important;
+            background: rgba(255, 255, 255, 0.20) !important;
             border: 1px solid rgba(255, 255, 255, 0.25) !important;
             border-radius: 60px !important;
-            padding: 18px 36px !important;
+            padding: clamp(14px, 2vw, 18px) clamp(28px, 3vw, 36px) !important;
             color: white !important;
-            font-size: 18px !important;
+            font-size: clamp(16px, 1.5vw, 18px) !important;
             font-family: 'Inter', sans-serif !important;
             font-weight: 500 !important;
             cursor: pointer !important;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
+            backdrop-filter: blur(1px) !important;
+            -webkit-backdrop-filter: blur(1px) !important;
             min-width: 160px !important;
             margin-top: 20px !important;
         }
@@ -313,7 +313,7 @@
             </div>
             
             <div class="tagline">
-                Transform your body, elevate your mind
+                Welcome to you
             </div>
             
             <!-- MindBody Widget Integration -->

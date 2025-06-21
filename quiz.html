@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ESSENTIAL META -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- OPTIMIZED SEO META -->
+    <title>RIECHE Movement Style Quiz | Discover Your Pilates Personality</title>
+    <meta name="description" content="Take our RIECHE movement style quiz to discover your unique Pilates personality. Find out if you're a Mindful Mover, Dynamic Achiever, Precision Perfectionist, or Aesthetic Aspirant.">
+
+    <!-- CANONICAL URL -->
+    <link rel="canonical" href="https://www.riechestudio.com/quiz">
+
+    <!-- ROBOTS (tells Google how to crawl) -->
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+    <!-- LOCAL SEO -->
+    <meta name="geo.region" content="CA-QC">
+    <meta name="geo.placename" content="Montreal">
+    <meta name="geo.position" content="45.5081;-73.5673">
+
+    <!-- OPEN GRAPH (Facebook, LinkedIn, etc.) -->
+    <meta property="og:title" content="RIECHE Movement Style Quiz | Discover Your Pilates Personality">
+    <meta property="og:description" content="Take our quiz to discover your unique movement style and get early access to RIECHE Pilates Studio in Montreal.">
+    <meta property="og:url" content="https://www.riechestudio.com/quiz">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="RIECHE Pilates Studio">
+    <meta property="og:locale" content="en_CA">
+
+    <!-- TWITTER CARDS -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="RIECHE Movement Style Quiz">
+    <meta name="twitter:description" content="Discover your unique Pilates personality and get early access to RIECHE.">
+
+    <!-- Favicon Links -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* The Seasons Font */
+        @font-face {
+            font-family: 'The Seasons';
+            src: url('/public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788-webfont.woff2') format('woff2'),
+                 url('/public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788-webfont.woff') format('woff'),
+                 url('/public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            font-family: 'Inter', sans-serif;
+            background: #D9DED8;
+            color: black;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        .navigation {
+            width: 100%;
+            height: 120px;
+            background: #D9DED8;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-main {
+            font-family: 'The Seasons', serif;
+            font-size: 48px;
+            font-weight: 400;
+            line-height: 43px;
+            color: black;
+        }
+
+        .logo-sub {
+            font-family: 'The Seasons', serif;
+            font-size: 28px;
+            font-weight: 400;
+            line-height: 25px;
+            color: black;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-link {
+            font-size: 16px;
+            font-weight: 500;
+            color: black;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-link:hover {
+            opacity: 0.7;
+        }
+
+        .contact-button {
+            padding: 12px 20px;
+            background: black;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .contact-button:hover {
+            background: #333;
+            transform: translateY(-1px);
+        }
+
+        /* Quiz Container */
+        .quiz-container {
+            max-width: 800px;
+            margin: 140px auto 40px;
+            padding: 40px 20px;
+        }
+
+        .quiz-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .quiz-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .quiz-progress {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e5e5;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: black;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .question {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 24px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            width: 100%;
+            text-align: left;
+            padding: 16px;
+            border: 2px solid #e5e5e5;
+            border-radius: 8px;
+            background: white;
+            font-size: 16px;
+            color: #1a1a1a;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:hover {
+            border-color: black;
+            background: #f8f8f8;
+        }
+
+        .option-btn:focus {
+            outline: none;
+            border-color: black;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-footer {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Result Styles */
+        .result-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .result-emoji {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .result-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .result-subtitle {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 16px;
+        }
+
+        .result-description {
+            color: #666;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .traits-section {
+            margin-bottom: 24px;
+        }
+
+        .traits-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .traits-list {
+            list-style: disc;
+            list-style-position: inside;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .recommendation-box {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e5e5e5;
+        }
+
+        .recommendation-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .recommendation-text {
+            color: #666;
+        }
+
+        .result-actions {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .primary-btn {
+            background: black;
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            margin-bottom: 16px;
+        }
+
+        .primary-btn:hover {
+            background: #333;
+        }
+
+        .secondary-actions {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .secondary-btn {
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .secondary-btn:hover {
+            color: #1a1a1a;
+        }
+
+        /* Email Form */
+        .email-form {
+            margin-top: 30px;
+        }
+
+        .email-title {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .email-description {
+            color: #666;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .email-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e5e5;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .email-input:focus {
+            outline: none;
+            border-color: black;
+        }
+
+        .email-btn {
+            width: 100%;
+            background: black;
+            color: white;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            margin-bottom: 12px;
+        }
+
+        .email-btn:hover {
+            background: #333;
+        }
+
+        .cancel-btn {
+            width: 100%;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .cancel-btn:hover {
+            color: #1a1a1a;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navigation {
+                padding: 0 20px;
+                height: 100px;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+
+            .nav-link {
+                font-size: 14px;
+            }
+
+            .logo-main {
+                font-size: 36px;
+                line-height: 32px;
+            }
+
+            .logo-sub {
+                font-size: 20px;
+                line-height: 18px;
+            }
+
+            .quiz-container {
+                margin-top: 120px;
+                padding: 20px;
+            }
+
+            .quiz-card {
+                padding: 24px;
+            }
+
+            .quiz-title {
+                font-size: 24px;
+            }
+
+            .question {
+                font-size: 18px;
+            }
+
+            .result-card {
+                padding: 24px;
+            }
+
+            .result-emoji {
+                font-size: 48px;
+            }
+
+            .result-title {
+                font-size: 20px;
+            }
+
+            .result-subtitle {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navigation">
+        <div class="logo">
+            <a href="index.html" style="text-decoration: none;">
+                <div class="logo-main">RIECHE</div>
+                <div class="logo-sub">Pilates Studio</div>
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="philosophy.html" class="nav-link">Rieche Philosophy</a>
+            <a href="quiz.html" class="nav-link">Quiz</a>
+            <a href="building-rieche.html" class="nav-link">Building RIECHE</a>
+            <a href="water.html" class="nav-link">Fluid Motion</a>
+            <a href="#contact" class="contact-button">Contact us</a>
+        </div>
+    </nav>
+
+    <!-- Quiz Container -->
+    <div class="quiz-container">
+        <div id="quiz-content">
+            <!-- Quiz content will be dynamically generated here -->
+        </div>
+    </div>
+
+    <script>
+        // Quiz Data
+        const questions = [
+            {
+                question: "Your ideal morning routine starts with...",
+                options: [
+                    { text: "Sunrise meditation and gentle stretching", type: "mindful" },
+                    { text: "Energizing workout to tackle the day", type: "dynamic" },
+                    { text: "Precise, focused movement session", type: "precision" },
+                    { text: "Beautiful ritual in a curated space", type: "aesthetic" }
+                ]
+            },
+            {
+                question: "When learning a new movement, you prefer to...",
+                options: [
+                    { text: "Master each detail before moving forward", type: "precision" },
+                    { text: "Flow through it and feel the rhythm", type: "mindful" },
+                    { text: "Push yourself to the next level", type: "dynamic" },
+                    { text: "Focus on how beautiful the movement looks", type: "aesthetic" }
+                ]
+            },
+            {
+                question: "Your dream studio space would be...",
+                options: [
+                    { text: "Minimalist and serene with natural light", type: "mindful" },
+                    { text: "Energizing with motivating music and mirrors", type: "dynamic" },
+                    { text: "Perfectly organized with premium equipment", type: "precision" },
+                    { text: "Instagram-worthy with stunning design details", type: "aesthetic" }
+                ]
+            },
+            {
+                question: "After a great Pilates session, you feel...",
+                options: [
+                    { text: "Centered and deeply connected to yourself", type: "mindful" },
+                    { text: "Energized and ready to conquer anything", type: "dynamic" },
+                    { text: "Accomplished and technically improved", type: "precision" },
+                    { text: "Radiant and inspired by the experience", type: "aesthetic" }
+                ]
+            },
+            {
+                question: "Your approach to home practice is...",
+                options: [
+                    { text: "Create a sacred daily ritual", type: "mindful" },
+                    { text: "Squeeze in powerful mini-sessions", type: "dynamic" },
+                    { text: "Perfect your technique with focused drills", type: "precision" },
+                    { text: "Curate a beautiful practice space", type: "aesthetic" }
+                ]
+            }
+        ];
+
+        const results = {
+            mindful: {
+                title: "The Mindful Mover",
+                description: "You approach Pilates as a moving meditation. For you, it's about the mind-body connection, breathwork, and finding stillness within movement. You value authentic, intentional practice over intensity.",
+                traits: ["Focuses on breath and awareness", "Values quality over quantity", "Seeks balance and inner peace", "Appreciates the philosophy behind movement"],
+                recommendation: "RIECHE's authentic movement philosophy aligns perfectly with your mindful approach. You'll love our emphasis on precision and presence.",
+                color: "bg-green-50 border-green-200",
+                emoji: "🧘‍♀️"
+            },
+            dynamic: {
+                title: "The Dynamic Achiever", 
+                description: "You bring energy and determination to every session. You love pushing boundaries, tracking progress, and leaving each practice feeling accomplished and strong.",
+                traits: ["Goal-oriented and motivated", "Enjoys challenging sequences", "Tracks improvement and progress", "Brings intensity to practice"],
+                recommendation: "RIECHE's precision-focused method will help you master advanced techniques and achieve your movement goals with expert guidance.",
+                color: "bg-orange-50 border-orange-200",
+                emoji: "🔥"
+            },
+            precision: {
+                title: "The Precision Perfectionist",
+                description: "You believe in mastering the fundamentals. Every angle, every breath, every micro-movement matters to you. You appreciate technical excellence and proper form above all.",
+                traits: ["Detail-oriented and methodical", "Values technical mastery", "Prefers quality instruction", "Focuses on perfect form"],
+                recommendation: "RIECHE was designed for you! Our 'master the movement' philosophy and premium instruction will satisfy your pursuit of technical excellence.",
+                color: "bg-blue-50 border-blue-200",
+                emoji: "🎯"
+            },
+            aesthetic: {
+                title: "The Aesthetic Aspirant",
+                description: "You appreciate beauty in movement and environment. For you, Pilates is about grace, elegance, and creating something beautiful through your practice.",
+                traits: ["Values beautiful experiences", "Appreciates design and aesthetics", "Enjoys graceful, flowing movement", "Inspired by visual beauty"],
+                recommendation: "RIECHE's premium studio design and emphasis on elegant movement will inspire your most beautiful practice yet.",
+                color: "bg-pink-50 border-pink-200",
+                emoji: "✨"
+            }
+        };
+
+        // Quiz State
+        let currentQuestion = 0;
+        let answers = [];
+        let showResult = false;
+        let showEmailForm = false;
+
+        // Initialize Quiz
+        function initQuiz() {
+            renderQuestion();
+        }
+
+        // Render Question
+        function renderQuestion() {
+            const question = questions[currentQuestion];
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+
+            const html = `
+                <div class="quiz-card">
+                    <div class="quiz-header">
+                        <h2 class="quiz-title">What's Your RIECHE Movement Style?</h2>
+                        <span class="quiz-progress">${currentQuestion + 1}/${questions.length}</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${progress}%"></div>
+                    </div>
+                    <div class="question">${question.question}</div>
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <button class="option-btn" onclick="handleAnswer('${option.type}')">
+                                ${option.text}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div class="quiz-footer">
+                        Discover your perfect RIECHE movement style and get early access to our Montreal studio
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('quiz-content').innerHTML = html;
+        }
+
+        // Handle Answer
+        function handleAnswer(answerType) {
+            answers.push(answerType);
+
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+            } else {
+                calculateResult();
+            }
+        }
+
+        // Calculate Result
+        function calculateResult() {
+            const counts = { mindful: 0, dynamic: 0, precision: 0, aesthetic: 0 };
+            answers.forEach(answer => {
+                counts[answer]++;
+            });
+            
+            const maxCount = Math.max(...Object.values(counts));
+            const resultType = Object.keys(counts).find(key => counts[key] === maxCount);
+            
+            showResult = resultType;
+            renderResult();
+        }
+
+        // Render Result
+        function renderResult() {
+            const result = results[showResult];
+
+            const html = `
+                <div class="result-card">
+                    <div class="result-header">
+                        <div class="result-emoji">${result.emoji}</div>
+                        <h2 class="result-title">You are...</h2>
+                        <h3 class="result-subtitle">${result.title}</h3>
+                    </div>
+                    
+                    <p class="result-description">${result.description}</p>
+                    
+                    <div class="traits-section">
+                        <h4 class="traits-title">Your movement traits:</h4>
+                        <ul class="traits-list">
+                            ${result.traits.map(trait => `<li>${trait}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="recommendation-box">
+                        <h4 class="recommendation-title">Perfect for you at RIECHE:</h4>
+                        <p class="recommendation-text">${result.recommendation}</p>
+                    </div>
+
+                    ${!showEmailForm ? `
+                        <div class="result-actions">
+                            <button class="primary-btn" onclick="showEmailForm = true; renderResult();">
+                                Join Waitlist for Early Access
+                            </button>
+                            <div class="secondary-actions">
+                                <button class="secondary-btn" onclick="shareResult()">
+                                    Share Result
+                                </button>
+                                <button class="secondary-btn" onclick="resetQuiz()">
+                                    Retake Quiz
+                                </button>
+                            </div>
+                        </div>
+                    ` : `
+                        <div class="email-form">
+                            <h3 class="email-title">Get Early Access to RIECHE</h3>
+                            <p class="email-description">Be the first to know when we open in Montreal + get your detailed movement style guide!</p>
+                            <input type="email" id="email-input" class="email-input" placeholder="Enter your email">
+                            <button class="email-btn" onclick="handleEmailSubmit()">
+                                Join Waitlist
+                            </button>
+                            <button class="cancel-btn" onclick="showEmailForm = false; renderResult();">
+                                Maybe later
+                            </button>
+                        </div>
+                    `}
+                </div>
+            `;
+
+            document.getElementById('quiz-content').innerHTML = html;
+        }
+
+        // Handle Email Submit
+        function handleEmailSubmit() {
+            const email = document.getElementById('email-input').value;
+            if (email) {
+                alert('Thanks! We\'ll send your detailed results and notify you when RIECHE opens!');
+                showEmailForm = false;
+                renderResult();
+            }
+        }
+
+        // Reset Quiz
+        function resetQuiz() {
+            currentQuestion = 0;
+            answers = [];
+            showResult = false;
+            showEmailForm = false;
+            renderQuestion();
+        }
+
+        // Share Result
+        function shareResult() {
+            const result = results[showResult];
+            const resultText = `I just found out I'm ${result.title} ${result.emoji}! What's your RIECHE movement style?`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'RIECHE Movement Style Quiz',
+                    text: resultText,
+                    url: window.location.href
+                });
+            } else if (navigator.clipboard) {
+                navigator.clipboard.writeText(`${resultText} Take the quiz: ${window.location.href}`);
+                alert('Result copied to clipboard!');
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html> 

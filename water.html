@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- OPTIMIZED SEO META -->
-    <title>Fluid Motion Experience | RIECHE Pilates Studio</title>
-    <meta name="description" content="Experience the fluid motion of our interactive water simulation. A meditative journey through movement and flow at RIECHE Pilates Studio.">
+    <title>Light Motion Experience | RIECHE Pilates Studio</title>
+    <meta name="description" content="Experience the fluid motion of our interactive light simulation. A meditative journey through movement and flow at RIECHE Pilates Studio.">
 
     <!-- CANONICAL URL -->
     <link rel="canonical" href="https://www.riechestudio.com/water">
@@ -16,8 +16,8 @@
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 
     <!-- OPEN GRAPH (Facebook, LinkedIn, etc.) -->
-    <meta property="og:title" content="Fluid Motion Experience | RIECHE Pilates Studio">
-    <meta property="og:description" content="Experience the fluid motion of our interactive water simulation. A meditative journey through movement and flow.">
+    <meta property="og:title" content="Light Motion Experience | RIECHE Pilates Studio">
+    <meta property="og:description" content="Experience the fluid motion of our interactive light simulation. A meditative journey through movement and flow.">
     <meta property="og:url" content="https://www.riechestudio.com/water">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="RIECHE Pilates Studio">
@@ -25,8 +25,8 @@
 
     <!-- TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Fluid Motion Experience | RIECHE">
-    <meta name="twitter:description" content="Experience the fluid motion of our interactive water simulation. A meditative journey through movement and flow.">
+    <meta name="twitter:title" content="Light Motion Experience | RIECHE">
+    <meta name="twitter:description" content="Experience the fluid motion of our interactive light simulation. A meditative journey through movement and flow.">
 
     <!-- Favicon Links -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -64,8 +64,8 @@
             cursor: crosshair;
         }
 
-        /* Fluid simulation canvas */
-        #fluid-canvas {
+        /* Light effect canvas */
+        #light-canvas {
             position: fixed;
             top: 0;
             left: 0;
@@ -215,7 +215,7 @@
     </style>
 </head>
 <body>
-    <canvas id="fluid-canvas"></canvas>
+    <canvas id="light-canvas"></canvas>
     
     <!-- Navigation -->
     <nav class="nav-container">
@@ -225,534 +225,187 @@
                 <a href="philosophy.html" class="nav-link">Philosophy</a>
                 <a href="quiz.html" class="nav-link">Quiz</a>
                 <a href="building-rieche.html" class="nav-link">Building RIECHE</a>
-                <a href="water.html" class="nav-link active">Fluid Motion</a>
+                <a href="water.html" class="nav-link active">Light Motion</a>
             </div>
         </div>
     </nav>
     
     <div class="content-overlay">
-        <h1 class="title">Fluid Motion</h1>
+        <h1 class="title">Light Motion</h1>
         <p class="subtitle">Experience the flow of movement</p>
     </div>
     
     <div class="instructions">
-        Click and drag to create fluid motion
+        Move your cursor to create light trails
     </div>
 
     <script>
-        class FluidSimulation {
+        class LightEffect {
             constructor(canvas) {
                 this.canvas = canvas;
-                this.gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-                
-                if (!this.gl) {
-                    console.error('WebGL not supported');
-                    return;
-                }
-
-                this.config = {
-                    TEXTURE_DOWNSAMPLE: 1,
-                    DENSITY_DISSIPATION: 0.98,
-                    VELOCITY_DISSIPATION: 0.99,
-                    PRESSURE_DISSIPATION: 0.8,
-                    PRESSURE_ITERATIONS: 25,
-                    CURL: 20,
-                    SPLAT_RADIUS: 0.005
-                };
-
-                this.pointers = [];
-                this.splatStack = [];
+                this.ctx = canvas.getContext('2d');
+                this.mouse = { x: 0, y: 0, isMoving: false };
+                this.lastMouse = { x: 0, y: 0 };
+                this.lightTrails = [];
+                this.time = 0;
                 
                 this.init();
                 this.setupEventListeners();
-                this.render();
+                this.animate();
             }
 
             init() {
                 this.resizeCanvas();
-                this.initShaders();
-                this.initFramebuffers();
-                this.addInitialSplats();
             }
 
             resizeCanvas() {
-                const realToCSSPixels = window.devicePixelRatio || 1;
-                const displayWidth = Math.floor(this.canvas.clientWidth * realToCSSPixels);
-                const displayHeight = Math.floor(this.canvas.clientHeight * realToCSSPixels);
-
-                if (this.canvas.width !== displayWidth || this.canvas.height !== displayHeight) {
-                    this.canvas.width = displayWidth;
-                    this.canvas.height = displayHeight;
-                    this.gl.viewport(0, 0, displayWidth, displayHeight);
-                }
-            }
-
-            initShaders() {
-                const gl = this.gl;
-
-                // Vertex shader
-                const vertexShaderSource = `
-                    precision highp float;
-                    attribute vec2 aPosition;
-                    varying vec2 vUv;
-                    varying vec2 vL;
-                    varying vec2 vR;
-                    varying vec2 vT;
-                    varying vec2 vB;
-                    uniform vec2 texelSize;
-                    
-                    void main () {
-                        vUv = aPosition * 0.5 + 0.5;
-                        vL = vUv - vec2(texelSize.x, 0.0);
-                        vR = vUv + vec2(texelSize.x, 0.0);
-                        vT = vUv + vec2(0.0, texelSize.y);
-                        vB = vUv - vec2(0.0, texelSize.y);
-                        gl_Position = vec4(aPosition, 0.0, 1.0);
-                    }
-                `;
-
-                // Fragment shaders
-                const advectionShader = `
-                    precision highp float;
-                    varying vec2 vUv;
-                    uniform sampler2D uVelocity;
-                    uniform sampler2D uSource;
-                    uniform vec2 texelSize;
-                    uniform float dt;
-                    uniform float dissipation;
-                    
-                    void main () {
-                        vec2 coord = vUv - dt * texture2D(uVelocity, vUv).xy * texelSize;
-                        gl_FragColor = dissipation * texture2D(uSource, coord);
-                    }
-                `;
-
-                const divergenceShader = `
-                    precision highp float;
-                    varying vec2 vUv;
-                    varying vec2 vL;
-                    varying vec2 vR;
-                    varying vec2 vT;
-                    varying vec2 vB;
-                    uniform sampler2D uVelocity;
-                    
-                    void main () {
-                        float L = texture2D(uVelocity, vL).x;
-                        float R = texture2D(uVelocity, vR).x;
-                        float T = texture2D(uVelocity, vT).y;
-                        float B = texture2D(uVelocity, vB).y;
-                        float div = 0.5 * (R - L + T - B);
-                        gl_FragColor = vec4(div, 0.0, 0.0, 1.0);
-                    }
-                `;
-
-                const curlShader = `
-                    precision highp float;
-                    varying vec2 vUv;
-                    varying vec2 vL;
-                    varying vec2 vR;
-                    varying vec2 vT;
-                    varying vec2 vB;
-                    uniform sampler2D uVelocity;
-                    
-                    void main () {
-                        float L = texture2D(uVelocity, vL).y;
-                        float R = texture2D(uVelocity, vR).y;
-                        float T = texture2D(uVelocity, vT).x;
-                        float B = texture2D(uVelocity, vB).x;
-                        float vorticity = R - L - T + B;
-                        gl_FragColor = vec4(vorticity, 0.0, 0.0, 1.0);
-                    }
-                `;
-
-                const vorticityShader = `
-                    precision highp float;
-                    varying vec2 vUv;
-                    varying vec2 vL;
-                    varying vec2 vR;
-                    varying vec2 vT;
-                    varying vec2 vB;
-                    uniform sampler2D uVelocity;
-                    uniform sampler2D uCurl;
-                    uniform float curl;
-                    uniform float dt;
-                    
-                    void main () {
-                        float L = texture2D(uCurl, vL).r;
-                        float R = texture2D(uCurl, vR).r;
-                        float T = texture2D(uCurl, vT).r;
-                        float B = texture2D(uCurl, vB).r;
-                        float C = texture2D(uCurl, vUv).r;
-                        vec2 force = vec2(abs(T) - abs(B), abs(R) - abs(L));
-                        force *= 1.0 / length(force + 0.00001) * curl * C;
-                        vec2 vel = texture2D(uVelocity, vUv).xy;
-                        gl_FragColor = vec4(vel + force * dt, 0.0, 1.0);
-                    }
-                `;
-
-                const pressureShader = `
-                    precision highp float;
-                    varying vec2 vUv;
-                    varying vec2 vL;
-                    varying vec2 vR;
-                    varying vec2 vT;
-                    varying vec2 vB;
-                    uniform sampler2D uPressure;
-                    uniform sampler2D uDivergence;
-                    
-                    void main () {
-                        float L = texture2D(uPressure, vL).r;
-                        float R = texture2D(uPressure, vR).r;
-                        float T = texture2D(uPressure, vT).r;
-                        float B = texture2D(uPressure, vB).r;
-                        float C = texture2D(uPressure, vUv).r;
-                        float divergence = texture2D(uDivergence, vUv).r;
-                        float pressure = (L + R + B + T - divergence) * 0.25;
-                        gl_FragColor = vec4(pressure, 0.0, 0.0, 1.0);
-                    }
-                `;
-
-                const gradientSubtractShader = `
-                    precision highp float;
-                    varying vec2 vUv;
-                    varying vec2 vL;
-                    varying vec2 vR;
-                    varying vec2 vT;
-                    varying vec2 vB;
-                    uniform sampler2D uPressure;
-                    uniform sampler2D uVelocity;
-                    
-                    void main () {
-                        float L = texture2D(uPressure, vL).r;
-                        float R = texture2D(uPressure, vR).r;
-                        float T = texture2D(uPressure, vT).r;
-                        float B = texture2D(uPressure, vB).r;
-                        vec2 velocity = texture2D(uVelocity, vUv).xy;
-                        velocity.xy -= vec2(R - L, T - B);
-                        gl_FragColor = vec4(velocity, 0.0, 1.0);
-                    }
-                `;
-
-                const displayShader = `
-                    precision highp float;
-                    varying vec2 vUv;
-                    uniform sampler2D uTexture;
-                    uniform float aspectRatio;
-                    
-                    void main () {
-                        vec3 color = texture2D(uTexture, vUv).rgb;
-                        
-                        // Enhanced coloring for water-like appearance
-                        color = pow(color, vec3(0.8));
-                        vec3 waterColor = vec3(0.3, 0.6, 0.9);
-                        color = mix(waterColor * 0.1, color * waterColor, length(color));
-                        
-                        gl_FragColor = vec4(color, 1.0);
-                    }
-                `;
-
-                const splatShader = `
-                    precision highp float;
-                    varying vec2 vUv;
-                    uniform sampler2D uTarget;
-                    uniform float aspectRatio;
-                    uniform vec3 color;
-                    uniform vec2 point;
-                    uniform float radius;
-                    
-                    void main () {
-                        vec2 p = vUv - point.xy;
-                        p.x *= aspectRatio;
-                        vec3 splat = exp(-dot(p, p) / radius) * color;
-                        vec3 base = texture2D(uTarget, vUv).xyz;
-                        gl_FragColor = vec4(base + splat, 1.0);
-                    }
-                `;
-
-                // Compile shaders
-                this.programs = {
-                    advection: this.createProgram(vertexShaderSource, advectionShader),
-                    divergence: this.createProgram(vertexShaderSource, divergenceShader),
-                    curl: this.createProgram(vertexShaderSource, curlShader),
-                    vorticity: this.createProgram(vertexShaderSource, vorticityShader),
-                    pressure: this.createProgram(vertexShaderSource, pressureShader),
-                    gradientSubtract: this.createProgram(vertexShaderSource, gradientSubtractShader),
-                    display: this.createProgram(vertexShaderSource, displayShader),
-                    splat: this.createProgram(vertexShaderSource, splatShader)
-                };
-
-                // Create vertex buffer
-                const vertices = new Float32Array([-1, -1, -1, 1, 1, 1, 1, -1]);
-                this.vertexBuffer = gl.createBuffer();
-                gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-                gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-            }
-
-            createProgram(vertexSource, fragmentSource) {
-                const gl = this.gl;
-                const vertexShader = this.createShader(gl.VERTEX_SHADER, vertexSource);
-                const fragmentShader = this.createShader(gl.FRAGMENT_SHADER, fragmentSource);
-                
-                const program = gl.createProgram();
-                gl.attachShader(program, vertexShader);
-                gl.attachShader(program, fragmentShader);
-                gl.linkProgram(program);
-                
-                if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-                    console.error('Program failed to link:', gl.getProgramInfoLog(program));
-                    return null;
-                }
-                
-                return program;
-            }
-
-            createShader(type, source) {
-                const gl = this.gl;
-                const shader = gl.createShader(type);
-                gl.shaderSource(shader, source);
-                gl.compileShader(shader);
-                
-                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-                    console.error('Shader failed to compile:', gl.getShaderInfoLog(shader));
-                    gl.deleteShader(shader);
-                    return null;
-                }
-                
-                return shader;
-            }
-
-            initFramebuffers() {
-                const gl = this.gl;
-                const simRes = this.getResolution(256);
-                const dyeRes = this.getResolution(512);
-
-                this.velocity = this.createDoubleFBO(simRes.width, simRes.height, gl.RG, gl.RG, gl.HALF_FLOAT || gl.FLOAT);
-                this.density = this.createDoubleFBO(dyeRes.width, dyeRes.height, gl.RGBA, gl.RGBA, gl.HALF_FLOAT || gl.UNSIGNED_BYTE);
-                this.pressure = this.createDoubleFBO(simRes.width, simRes.height, gl.RGB, gl.RGB, gl.HALF_FLOAT || gl.FLOAT);
-                this.divergence = this.createFBO(simRes.width, simRes.height, gl.RGB, gl.RGB, gl.HALF_FLOAT || gl.FLOAT);
-                this.curl = this.createFBO(simRes.width, simRes.height, gl.RGB, gl.RGB, gl.HALF_FLOAT || gl.FLOAT);
-            }
-
-            getResolution(resolution) {
-                let aspectRatio = this.gl.drawingBufferWidth / this.gl.drawingBufferHeight;
-                if (aspectRatio < 1) aspectRatio = 1.0 / aspectRatio;
-
-                const max = Math.round(resolution * aspectRatio);
-                const min = Math.round(resolution);
-
-                if (this.gl.drawingBufferWidth > this.gl.drawingBufferHeight) {
-                    return { width: max, height: min };
-                } else {
-                    return { width: min, height: max };
-                }
-            }
-
-            createFBO(w, h, internalFormat, format, type) {
-                const gl = this.gl;
-                const texture = gl.createTexture();
-                gl.bindTexture(gl.TEXTURE_2D, texture);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-                gl.texImage2D(gl.TEXTURE_2D, 0, internalFormat, w, h, 0, format, type, null);
-
-                const fbo = gl.createFramebuffer();
-                gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
-                gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
-                gl.viewport(0, 0, w, h);
-                gl.clear(gl.COLOR_BUFFER_BIT);
-
-                return { texture, fbo, width: w, height: h };
-            }
-
-            createDoubleFBO(w, h, internalFormat, format, type) {
-                let fbo1 = this.createFBO(w, h, internalFormat, format, type);
-                let fbo2 = this.createFBO(w, h, internalFormat, format, type);
-
-                return {
-                    get read() { return fbo1; },
-                    set read(value) { fbo1 = value; },
-                    get write() { return fbo2; },
-                    set write(value) { fbo2 = value; },
-                    swap() { [fbo1, fbo2] = [fbo2, fbo1]; }
-                };
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
             }
 
             setupEventListeners() {
                 const canvas = this.canvas;
 
-                canvas.addEventListener('mousedown', (e) => {
-                    const pointer = { 
-                        id: -1, 
-                        x: e.offsetX, 
-                        y: e.offsetY, 
-                        dx: 0, 
-                        dy: 0, 
-                        down: true, 
-                        moved: false 
-                    };
-                    this.pointers.push(pointer);
-                });
-
+                // Mouse events
                 canvas.addEventListener('mousemove', (e) => {
-                    const pointer = this.pointers.find(p => p.id === -1);
-                    if (pointer) {
-                        pointer.dx = (e.offsetX - pointer.x) * 10.0;
-                        pointer.dy = (e.offsetY - pointer.y) * -10.0;
-                        pointer.x = e.offsetX;
-                        pointer.y = e.offsetY;
-                        pointer.moved = true;
-                    }
+                    this.mouse.x = e.clientX;
+                    this.mouse.y = e.clientY;
+                    this.mouse.isMoving = true;
+                    
+                    // Add to light trails
+                    this.addLightTrail(e.clientX, e.clientY);
                 });
 
-                canvas.addEventListener('mouseup', () => {
-                    this.pointers = this.pointers.filter(p => p.id !== -1);
+                canvas.addEventListener('mouseleave', () => {
+                    this.mouse.isMoving = false;
                 });
 
                 // Touch events
-                canvas.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    const touches = e.targetTouches;
-                    for (let i = 0; i < touches.length; i++) {
-                        const touch = touches[i];
-                        const rect = canvas.getBoundingClientRect();
-                        const pointer = {
-                            id: touch.identifier,
-                            x: touch.clientX - rect.left,
-                            y: touch.clientY - rect.top,
-                            dx: 0,
-                            dy: 0,
-                            down: true,
-                            moved: false
-                        };
-                        this.pointers.push(pointer);
-                    }
-                });
-
                 canvas.addEventListener('touchmove', (e) => {
                     e.preventDefault();
-                    const touches = e.targetTouches;
-                    for (let i = 0; i < touches.length; i++) {
-                        const touch = touches[i];
-                        const rect = canvas.getBoundingClientRect();
-                        const pointer = this.pointers.find(p => p.id === touch.identifier);
-                        if (pointer) {
-                            pointer.dx = (touch.clientX - rect.left - pointer.x) * 10.0;
-                            pointer.dy = (touch.clientY - rect.top - pointer.y) * -10.0;
-                            pointer.x = touch.clientX - rect.left;
-                            pointer.y = touch.clientY - rect.top;
-                            pointer.moved = true;
-                        }
-                    }
+                    const touch = e.touches[0];
+                    this.mouse.x = touch.clientX;
+                    this.mouse.y = touch.clientY;
+                    this.mouse.isMoving = true;
+                    
+                    this.addLightTrail(touch.clientX, touch.clientY);
                 });
 
-                canvas.addEventListener('touchend', (e) => {
-                    const touches = e.changedTouches;
-                    for (let i = 0; i < touches.length; i++) {
-                        const touch = touches[i];
-                        this.pointers = this.pointers.filter(p => p.id !== touch.identifier);
-                    }
+                canvas.addEventListener('touchend', () => {
+                    this.mouse.isMoving = false;
                 });
 
                 window.addEventListener('resize', () => {
                     this.resizeCanvas();
-                    this.initFramebuffers();
                 });
             }
 
-            addInitialSplats() {
-                // Add some initial fluid motion
-                for (let i = 0; i < 5; i++) {
-                    setTimeout(() => {
-                        this.splat(Math.random(), Math.random(), Math.random() * 1000, 
-                                 [Math.random() * 0.3 + 0.1, Math.random() * 0.3 + 0.3, Math.random() * 0.3 + 0.6]);
-                    }, i * 100);
+            addLightTrail(x, y) {
+                this.lightTrails.push({
+                    x: x,
+                    y: y,
+                    life: 1,
+                    decay: 0.02,
+                    size: 150 + Math.random() * 50
+                });
+            }
+
+            updateLightTrails() {
+                for (let i = this.lightTrails.length - 1; i >= 0; i--) {
+                    const trail = this.lightTrails[i];
+                    trail.life -= trail.decay;
+                    
+                    if (trail.life <= 0) {
+                        this.lightTrails.splice(i, 1);
+                    }
                 }
             }
 
-            splat(x, y, dx, color) {
-                const gl = this.gl;
-                const program = this.programs.splat;
-                gl.useProgram(program);
-
-                gl.uniform1i(gl.getUniformLocation(program, 'uTarget'), this.velocity.read.texture);
-                gl.uniform1f(gl.getUniformLocation(program, 'aspectRatio'), this.canvas.width / this.canvas.height);
-                gl.uniform2f(gl.getUniformLocation(program, 'point'), x, y);
-                gl.uniform3f(gl.getUniformLocation(program, 'color'), dx, 0, 1.0);
-                gl.uniform1f(gl.getUniformLocation(program, 'radius'), this.config.SPLAT_RADIUS);
-
-                this.blit(this.velocity.write.fbo);
-                this.velocity.swap();
-
-                gl.uniform1i(gl.getUniformLocation(program, 'uTarget'), this.density.read.texture);
-                gl.uniform3f(gl.getUniformLocation(program, 'color'), color[0], color[1], color[2]);
-                this.blit(this.density.write.fbo);
-                this.density.swap();
-            }
-
-            blit(destination) {
-                const gl = this.gl;
-                gl.bindFramebuffer(gl.FRAMEBUFFER, destination);
-                gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
-            }
-
-            render() {
-                const gl = this.gl;
+            drawLightEffect() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 
-                // Process pointer interactions
-                this.pointers.forEach(pointer => {
-                    if (pointer.moved) {
-                        this.splat(
-                            pointer.x / this.canvas.width,
-                            1.0 - pointer.y / this.canvas.height,
-                            pointer.dx,
-                            [0.2, 0.4, 0.8]
-                        );
-                        pointer.moved = false;
-                    }
+                // Create subtle gradient background
+                const gradient = this.ctx.createRadialGradient(
+                    this.canvas.width / 2, this.canvas.height / 2, 0,
+                    this.canvas.width / 2, this.canvas.height / 2, Math.max(this.canvas.width, this.canvas.height) / 2
+                );
+                gradient.addColorStop(0, 'rgba(26, 26, 26, 1)');
+                gradient.addColorStop(1, 'rgba(10, 10, 10, 1)');
+                this.ctx.fillStyle = gradient;
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw light trails (spotlight effect)
+                this.lightTrails.forEach(trail => {
+                    const alpha = trail.life * 0.3;
+                    const size = trail.size * trail.life;
+                    
+                    // Create radial gradient for spotlight effect
+                    const spotlightGradient = this.ctx.createRadialGradient(
+                        trail.x, trail.y, 0,
+                        trail.x, trail.y, size
+                    );
+                    
+                    // Subtle blue-white glow
+                    spotlightGradient.addColorStop(0, `rgba(255, 255, 255, ${alpha * 0.1})`);
+                    spotlightGradient.addColorStop(0.3, `rgba(200, 220, 255, ${alpha * 0.05})`);
+                    spotlightGradient.addColorStop(0.6, `rgba(150, 180, 255, ${alpha * 0.03})`);
+                    spotlightGradient.addColorStop(1, 'rgba(100, 140, 255, 0)');
+                    
+                    this.ctx.fillStyle = spotlightGradient;
+                    this.ctx.beginPath();
+                    this.ctx.arc(trail.x, trail.y, size, 0, Math.PI * 2);
+                    this.ctx.fill();
                 });
-
-                // Advection step
-                gl.useProgram(this.programs.advection);
-                gl.uniform2f(gl.getUniformLocation(this.programs.advection, 'texelSize'), 
-                           1.0 / this.velocity.width, 1.0 / this.velocity.height);
-                gl.uniform1f(gl.getUniformLocation(this.programs.advection, 'dt'), 0.016);
-                gl.uniform1f(gl.getUniformLocation(this.programs.advection, 'dissipation'), this.config.VELOCITY_DISSIPATION);
-                gl.uniform1i(gl.getUniformLocation(this.programs.advection, 'uVelocity'), this.velocity.read.texture);
-                gl.uniform1i(gl.getUniformLocation(this.programs.advection, 'uSource'), this.velocity.read.texture);
-                this.blit(this.velocity.write.fbo);
-                this.velocity.swap();
-
-                // Density advection
-                gl.uniform1f(gl.getUniformLocation(this.programs.advection, 'dissipation'), this.config.DENSITY_DISSIPATION);
-                gl.uniform1i(gl.getUniformLocation(this.programs.advection, 'uSource'), this.density.read.texture);
-                this.blit(this.density.write.fbo);
-                this.density.swap();
-
-                // Display
-                gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-                gl.viewport(0, 0, this.canvas.width, this.canvas.height);
-                gl.useProgram(this.programs.display);
-                gl.uniform1i(gl.getUniformLocation(this.programs.display, 'uTexture'), this.density.read.texture);
-                gl.uniform1f(gl.getUniformLocation(this.programs.display, 'aspectRatio'), this.canvas.width / this.canvas.height);
                 
-                gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-                gl.enableVertexAttribArray(0);
-                gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
-                
-                this.blit(null);
+                // Draw current mouse position with stronger spotlight
+                if (this.mouse.isMoving) {
+                    const currentSize = 200;
+                    
+                    // Main spotlight at current position
+                    const mainSpotlight = this.ctx.createRadialGradient(
+                        this.mouse.x, this.mouse.y, 0,
+                        this.mouse.x, this.mouse.y, currentSize
+                    );
+                    
+                    mainSpotlight.addColorStop(0, 'rgba(255, 255, 255, 0.15)');
+                    mainSpotlight.addColorStop(0.2, 'rgba(220, 240, 255, 0.08)');
+                    mainSpotlight.addColorStop(0.5, 'rgba(180, 200, 255, 0.04)');
+                    mainSpotlight.addColorStop(1, 'rgba(140, 160, 255, 0)');
+                    
+                    this.ctx.fillStyle = mainSpotlight;
+                    this.ctx.beginPath();
+                    this.ctx.arc(this.mouse.x, this.mouse.y, currentSize, 0, Math.PI * 2);
+                    this.ctx.fill();
+                    
+                    // Subtle inner glow
+                    const innerGlow = this.ctx.createRadialGradient(
+                        this.mouse.x, this.mouse.y, 0,
+                        this.mouse.x, this.mouse.y, 50
+                    );
+                    
+                    innerGlow.addColorStop(0, 'rgba(255, 255, 255, 0.2)');
+                    innerGlow.addColorStop(0.5, 'rgba(240, 250, 255, 0.1)');
+                    innerGlow.addColorStop(1, 'rgba(220, 240, 255, 0)');
+                    
+                    this.ctx.fillStyle = innerGlow;
+                    this.ctx.beginPath();
+                    this.ctx.arc(this.mouse.x, this.mouse.y, 50, 0, Math.PI * 2);
+                    this.ctx.fill();
+                }
+            }
 
-                requestAnimationFrame(() => this.render());
+            animate() {
+                this.time += 0.016;
+                this.updateLightTrails();
+                this.drawLightEffect();
+                requestAnimationFrame(() => this.animate());
             }
         }
 
-        // Initialize fluid simulation
-        const canvas = document.getElementById('fluid-canvas');
+        // Initialize light effect
+        const canvas = document.getElementById('light-canvas');
         if (canvas) {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            new FluidSimulation(canvas);
+            new LightEffect(canvas);
         }
     </script>
 </body>

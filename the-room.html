@@ -1240,7 +1240,7 @@
                 document.body.style.overflow = 'auto';
             }
 
-            async function checkPassword() {
+            function checkPassword() {
                 const password = passwordInput.value.trim();
                 
                 if (!password) {
@@ -1253,64 +1253,38 @@
                 submitButton.disabled = true;
                 submitButton.textContent = 'Checking...';
 
-                try {
-                    const response = await fetch('/api/auth', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ password }),
-                        credentials: 'include' // Important: include cookies
-                    });
-
-                    const data = await response.json();
-
+                fetch('/api/auth', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ password }),
+                    credentials: 'include'
+                })
+                .then(response => response.json().then(data => ({ response, data })))
+                .then(({ response, data }) => {
                     if (response.ok) {
-                        // Success! Hide modal and redirect
                         hidePasswordModal();
-                        
-                        // Small delay for better UX
                         setTimeout(() => {
                             window.location.href = '/secure-room.html';
                         }, 300);
-                        
                     } else {
-                        // Show error message
                         passwordError.textContent = data.error || 'Invalid password';
                         passwordError.classList.add('visible');
                         passwordInput.value = '';
                         passwordInput.focus();
                     }
-
-                } catch (error) {
+                })
+                .catch(error => {
                     console.error('Authentication error:', error);
                     passwordError.textContent = 'Connection error. Please try again.';
                     passwordError.classList.add('visible');
                     passwordInput.value = '';
-                } finally {
-                    // Re-enable button
+                })
+                .finally(() => {
                     submitButton.disabled = false;
                     submitButton.textContent = 'Unlock';
-                }
-            }
-
-            // Add this function to check if user is already authenticated
-            async function checkExistingAuth() {
-                try {
-                    // Try to access the secure area directly
-                    const response = await fetch('/secure-room.html', {
-                        method: 'HEAD',
-                        credentials: 'include'
-                    });
-                    
-                    if (response.ok) {
-                        // User is already authenticated, could show a different message
-                        console.log('User already has access');
-                    }
-                } catch (error) {
-                    // User not authenticated, which is expected
-                    console.log('User not authenticated');
-                }
+                });
             }
 
             // Event listeners for password modal
@@ -1336,13 +1310,6 @@
                 if (e.key === 'Escape' && passwordModal.classList.contains('visible')) {
                     hidePasswordModal();
                 }
-            });
-
-            // Call this when page loads
-            const originalDOMContentLoaded = document.onreadystatechange;
-            document.addEventListener('DOMContentLoaded', function() {
-                checkExistingAuth();
-                // Your existing DOMContentLoaded code here...
             });
         });
     </script>

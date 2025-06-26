@@ -48,6 +48,26 @@
             pointer-events: none;
         }
 
+        /* Loading screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            color: white;
+            font-size: 18px;
+        }
+
+        .loading-screen.hidden {
+            display: none;
+        }
+
         /* Navigation with logout */
         .nav-container {
             position: fixed;
@@ -214,6 +234,11 @@
     </style>
 </head>
 <body>
+    <!-- Loading screen -->
+    <div class="loading-screen" id="loading-screen">
+        Verifying access...
+    </div>
+
     <canvas id="light-canvas"></canvas>
     
     <!-- Navigation -->
@@ -250,6 +275,33 @@
     </div>
 
     <script>
+        // CHECK ACCESS FIRST - before anything else loads
+        async function checkAccess() {
+            try {
+                const response = await fetch('/api/verify-access', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    // No access - redirect to login
+                    window.location.href = '/the-room.html';
+                    return;
+                }
+                
+                // Access verified - show the page
+                document.getElementById('loading-screen').classList.add('hidden');
+                
+            } catch (error) {
+                console.error('Access check failed:', error);
+                // On error, redirect to login for security
+                window.location.href = '/the-room.html';
+            }
+        }
+
+        // Run access check immediately
+        checkAccess();
+
         // Include your light effect script here (same as the-room.html)
         class LightEffect {
             constructor(canvas) {
@@ -423,7 +475,6 @@
         // Logout function
         async function logout() {
             try {
-                // Call logout API to clear server-side session
                 await fetch('/api/logout', {
                     method: 'POST',
                     credentials: 'include'
@@ -432,11 +483,6 @@
                 console.log('Logout API call failed, but continuing with client logout');
             }
             
-            // Clear any client-side data
-            sessionStorage.clear();
-            localStorage.clear();
-            
-            // Redirect to main page
             window.location.href = '/the-room.html';
         }
 
@@ -452,4 +498,4 @@
         });
     </script>
 </body>
-</html> 
+</html>

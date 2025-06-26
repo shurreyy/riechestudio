@@ -1243,26 +1243,34 @@
             function checkPassword() {
                 const password = passwordInput.value.trim();
                 
+                console.log('Password entered:', password); // Debug log
+                
                 if (!password) {
                     passwordError.textContent = 'Please enter a password';
                     passwordError.classList.add('visible');
                     return;
                 }
-
+            
                 // Disable button during request
                 submitButton.disabled = true;
                 submitButton.textContent = 'Checking...';
-
+                
+                console.log('Making API call to /api/auth'); // Debug log
+            
                 fetch('/api/auth', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ password }),
+                    body: JSON.stringify({ password: password }),
                     credentials: 'include'
                 })
-                .then(response => response.json().then(data => ({ response, data })))
+                .then(response => {
+                    console.log('Response status:', response.status); // Debug log
+                    return response.json().then(data => ({ response, data }));
+                })
                 .then(({ response, data }) => {
+                    console.log('Response data:', data); // Debug log
                     if (response.ok) {
                         hidePasswordModal();
                         setTimeout(() => {
@@ -1276,7 +1284,7 @@
                     }
                 })
                 .catch(error => {
-                    console.error('Authentication error:', error);
+                    console.error('Authentication error:', error); // Debug log
                     passwordError.textContent = 'Connection error. Please try again.';
                     passwordError.classList.add('visible');
                     passwordInput.value = '';

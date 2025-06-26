@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ESSENTIAL META -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- SEO META -->
+    <title>Private Content - RIECHE Studio</title>
+    <meta name="description" content="Private content area for RIECHE Studio members.">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Favicon Links -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* The Seasons Font */
+        @font-face {
+            font-family: 'The Seasons';
+            src: url('/public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788-webfont.woff2') format('woff2'),
+                 url('/public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788-webfont.woff') format('woff'),
+                 url('/public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            font-family: 'Inter', sans-serif;
+            background: rgba(217, 222, 216, 0.95);
+            color: black;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .navigation {
+            width: 100%;
+            height: 120px;
+            background: rgba(217, 222, 216, 0.3);
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-main {
+            font-family: 'The Seasons', serif;
+            font-size: 48px;
+            font-weight: 400;
+            line-height: 43px;
+            color: black;
+            text-decoration: none;
+        }
+
+        .logo-sub {
+            font-family: 'The Seasons', serif;
+            font-size: 28px;
+            font-weight: 400;
+            line-height: 25px;
+            color: black;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-link {
+            font-size: 16px;
+            font-weight: 500;
+            color: black;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-link:hover {
+            opacity: 0.7;
+        }
+
+        /* Password Form */
+        .password-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 120px 20px 60px;
+            background-image: url('/public/assets/images/3D Glass Flowers (18).png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+        }
+
+        .password-form {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            padding: 60px 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .password-title {
+            font-family: 'The Seasons', serif;
+            font-size: 36px;
+            font-weight: 400;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .password-subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 30px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+        }
+
+        .password-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .password-button {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .password-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Content Area */
+        .content-area {
+            display: none;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 120px 40px 60px;
+        }
+
+        .content-title {
+            font-family: 'The Seasons', serif;
+            font-size: clamp(32px, 6vw, 48px);
+            font-weight: 400;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #2c3e20;
+        }
+
+        .content-text {
+            font-size: 18px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            color: #4a4a4a;
+        }
+
+        .logout-button {
+            position: fixed;
+            top: 140px;
+            right: 40px;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 101;
+        }
+
+        .logout-button:hover {
+            background: rgba(0, 0, 0, 1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navigation {
+                padding: 0 20px;
+                height: 100px;
+            }
+
+            .logo-main {
+                font-size: 36px;
+                line-height: 32px;
+            }
+
+            .logo-sub {
+                font-size: 20px;
+                line-height: 18px;
+            }
+
+            .password-form {
+                padding: 40px 30px;
+                margin: 0 20px;
+            }
+
+            .logout-button {
+                top: 120px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navigation">
+        <div class="logo">
+            <a href="index.html" style="text-decoration: none;">
+                <div class="logo-main">RIECHE</div>
+                <div class="logo-sub">Pilates Studio</div>
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="philosophy.html" class="nav-link">Philosophy</a>
+            <a href="quiz.html" class="nav-link">Quiz</a>
+            <a href="building-rieche.html" class="nav-link">Building RIECHE</a>
+            <a href="the-room.html" class="nav-link">The Room</a>
+        </div>
+    </nav>
+
+    <!-- Password Form -->
+    <div class="password-container" id="passwordContainer">
+        <div class="password-form">
+            <h1 class="password-title">Private Access</h1>
+            <p class="password-subtitle">Enter the password to view this content</p>
+            <form id="passwordForm">
+                <input type="password" class="password-input" id="passwordInput" placeholder="Enter password" required>
+                <button type="submit" class="password-button">Enter</button>
+            </form>
+            <div class="error-message" id="errorMessage">Incorrect password. Please try again.</div>
+        </div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content-area" id="contentArea">
+        <button class="logout-button" id="logoutButton">Logout</button>
+        
+        <h1 class="content-title">Private Content</h1>
+        
+        <div class="content-text">
+            <p>Welcome to the private area! This content is only visible to those with the correct password.</p>
+            
+            <p>You can add any private content here - member-only resources, exclusive content, or anything else you'd like to keep behind a password.</p>
+            
+            <p>This is a simple client-side password protection. For more secure access control, consider implementing server-side authentication.</p>
+        </div>
+
+        <div class="content-text">
+            <h2>Example Private Content</h2>
+            <p>This could include:</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Exclusive workout videos</li>
+                <li>Member-only resources</li>
+                <li>Private announcements</li>
+                <li>Special offers</li>
+                <li>Behind-the-scenes content</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Password protection
+        const CORRECT_PASSWORD = 'rieche2024'; // Change this to your desired password
+        
+        const passwordContainer = document.getElementById('passwordContainer');
+        const contentArea = document.getElementById('contentArea');
+        const passwordForm = document.getElementById('passwordForm');
+        const passwordInput = document.getElementById('passwordInput');
+        const errorMessage = document.getElementById('errorMessage');
+        const logoutButton = document.getElementById('logoutButton');
+
+        // Check if user is already authenticated
+        if (sessionStorage.getItem('authenticated') === 'true') {
+            showContent();
+        }
+
+        passwordForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = passwordInput.value;
+            
+            if (password === CORRECT_PASSWORD) {
+                sessionStorage.setItem('authenticated', 'true');
+                showContent();
+                errorMessage.style.display = 'none';
+            } else {
+                errorMessage.style.display = 'block';
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        });
+
+        logoutButton.addEventListener('click', function() {
+            sessionStorage.removeItem('authenticated');
+            showPasswordForm();
+        });
+
+        function showContent() {
+            passwordContainer.style.display = 'none';
+            contentArea.style.display = 'block';
+        }
+
+        function showPasswordForm() {
+            passwordContainer.style.display = 'flex';
+            contentArea.style.display = 'none';
+            passwordInput.value = '';
+            errorMessage.style.display = 'none';
+        }
+
+        // Handle Enter key on password input
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                passwordForm.dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+</body>
+</html> 

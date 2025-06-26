@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ESSENTIAL META -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- OPTIMIZED SEO META -->
+    <title>The Room | RIECHE Pilates Studio</title>
+    <meta name="description" content="Experience The Room - our interactive light simulation. A meditative journey through movement and flow at RIECHE Pilates Studio.">
+
+    <!-- CANONICAL URL -->
+    <link rel="canonical" href="https://www.riechestudio.com/water">
+
+    <!-- ROBOTS (tells Google how to crawl) -->
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+    <!-- OPEN GRAPH (Facebook, LinkedIn, etc.) -->
+    <meta property="og:title" content="The Room | RIECHE Pilates Studio">
+    <meta property="og:description" content="Experience The Room - our interactive light simulation. A meditative journey through movement and flow.">
+    <meta property="og:url" content="https://www.riechestudio.com/water">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="RIECHE Pilates Studio">
+    <meta property="og:locale" content="en_CA">
+
+    <!-- TWITTER CARDS -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="The Room | RIECHE">
+    <meta name="twitter:description" content="Experience The Room - our interactive light simulation. A meditative journey through movement and flow.">
+
+    <!-- Favicon Links -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* The Seasons Font - Corrected paths for Vercel */
+        @font-face {
+            font-family: 'The Seasons';
+            src: url('/public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788-webfont.woff2') format('woff2'),
+                 url('/public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788-webfont.woff') format('woff'),
+                 url('/public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            overflow: auto;
+            background: #1a1a1a;
+            cursor: crosshair;
+        }
+
+        /* Light effect canvas */
+        #light-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+        }
+
+        /* Navigation */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100vw;
+        }
+
+        .nav-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            position: relative;
+        }
+
+        .nav-brand {
+            font-family: 'The Seasons', 'Playfair Display', serif;
+            font-size: 24px;
+            color: white;
+            text-decoration: none;
+            font-weight: 400;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            padding-left: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+
+        .nav-link:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Content overlay */
+        .content-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            z-index: 10;
+            pointer-events: none;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .content-overlay.fade-out {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.95);
+        }
+
+        .title {
+            font-family: 'The Seasons', 'Playfair Display', serif;
+            font-size: clamp(60px, 10vw, 140px);
+            font-weight: 400;
+            margin-bottom: 1rem;
+            opacity: 0.95;
+            line-height: 0.9;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 50%, #e0e0e0 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            animation: textGlow 3s ease-in-out infinite alternate;
+        }
+
+        .subtitle {
+            font-size: clamp(16px, 2vw, 28px);
+            opacity: 0.8;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Background fade overlay */
+        .background-fade {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.8) 100%);
+            z-index: 5;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            pointer-events: none;
+        }
+
+        .background-fade.visible {
+            opacity: 1;
+        }
+
+        /* Enter Room Section */
+        .enter-room-section {
+            position: fixed;
+            top: 100vh;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.8s ease;
+            opacity: 0;
+            /* Add gradient fade to edges */
+            mask-image: radial-gradient(ellipse at center, black 60%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 60%, transparent 100%);
+        }
+
+        .enter-room-section.visible {
+            transform: translateY(-100vh);
+            opacity: 1;
+        }
+
+        .enter-room-content {
+            text-align: center;
+            color: white;
+            max-width: 600px;
+            padding: 0 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+        }
+
+        .enter-room-section.visible .enter-room-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .enter-room-title {
+            font-family: 'The Seasons', 'Playfair Display', serif;
+            font-size: clamp(40px, 6vw, 80px);
+            font-weight: 400;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 50%, #e0e0e0 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .enter-room-description {
+            font-size: clamp(16px, 2vw, 20px);
+            opacity: 0.8;
+            font-weight: 300;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+        }
+
+        .enter-room-button {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 18px 40px;
+            font-size: 18px;
+            font-weight: 400;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .enter-room-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .enter-room-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .enter-room-button:hover::before {
+            left: 100%;
+        }
+
+        .enter-room-button:active {
+            transform: translateY(0);
+        }
+
+        /* Password Popup Modal */
+        .password-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .password-modal.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .password-content {
+            background: rgba(26, 26, 26, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.4s ease;
+        }
+
+        .password-modal.visible .password-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .password-title {
+            font-family: 'The Seasons', 'Playfair Display', serif;
+            font-size: 28px;
+            color: white;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .password-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .password-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 16px 20px;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .password-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .password-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .password-button {
+            padding: 12px 24px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 14px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .password-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .password-button.primary {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .password-button.primary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .password-error {
+            color: #ff6b6b;
+            font-size: 14px;
+            margin-top: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .password-error.visible {
+            opacity: 1;
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            opacity: 0.6;
+            font-size: 14px;
+            text-align: center;
+            z-index: 10;
+            pointer-events: none;
+            animation: fadeInOut 2s ease-in-out infinite;
+            transition: opacity 0.3s ease;
+        }
+
+        .scroll-indicator.hide {
+            opacity: 0 !important;
+            pointer-events: none;
+        }
+
+        .scroll-indicator::after {
+            content: '↓';
+            display: block;
+            font-size: 20px;
+            margin-top: 8px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .instructions {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            opacity: 0.7;
+            font-size: 0.9rem;
+            text-align: center;
+            z-index: 10;
+            pointer-events: none;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+        }
+
+        @keyframes textGlow {
+            from {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            }
+            to {
+                text-shadow: 0 0 40px rgba(255, 255, 255, 0.4), 0 0 60px rgba(144, 142, 244, 0.2);
+            }
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 15px 10px;
+            }
+            .nav-brand {
+                left: 0;
+                font-size: 18px;
+                padding-left: 0;
+            }
+            .nav-links {
+                gap: 12px;
+            }
+            
+            .nav-link {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+            
+            .title {
+                font-size: clamp(40px, 8vw, 80px);
+            }
+            
+            .subtitle {
+                font-size: clamp(14px, 3vw, 20px);
+            }
+
+            .enter-room-content {
+                padding: 0 20px;
+            }
+
+            .enter-room-title {
+                font-size: clamp(32px, 8vw, 60px);
+            }
+
+            .enter-room-description {
+                font-size: clamp(14px, 4vw, 18px);
+                margin-bottom: 2rem;
+            }
+
+            .enter-room-button {
+                padding: 16px 32px;
+                font-size: 16px;
+            }
+
+            .scroll-indicator {
+                font-size: 12px;
+                bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="light-canvas"></canvas>
+    
+    <!-- Background fade overlay -->
+    <div class="background-fade"></div>
+    
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div class="nav-content">
+            <a href="index.html" class="nav-brand">RIECHE</a>
+            <div class="nav-links">
+                <a href="philosophy.html" class="nav-link">Philosophy</a>
+                <a href="quiz.html" class="nav-link">Quiz</a>
+                <a href="building-rieche.html" class="nav-link">Building RIECHE</a>
+                <a href="the-room.html" class="nav-link active">The Room</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="content-overlay">
+        <h1 class="title">The Room</h1>
+        <p class="subtitle">The Room finds who it wants. Today, that's you.</p>
+    </div>
+    
+    <div class="enter-room-section">
+        <div class="enter-room-content">
+            <h2 class="enter-room-title">Enter the Room</h2>
+            <p class="enter-room-description">Did you bring your key?</p>
+            <a href="#" class="enter-room-button">Unlock the Room</a>
+        </div>
+    </div>
+
+    <div class="scroll-indicator">
+        Come on in.
+    </div>
+
+    <!-- Password Modal -->
+    <div class="password-modal">
+        <div class="password-content">
+            <h3 class="password-title">Enter Password</h3>
+            <p class="password-description">Please enter the password to unlock The Room.</p>
+            <input type="password" class="password-input" placeholder="Enter password..." id="password-input">
+            <div class="password-buttons">
+                <button class="password-button" id="cancel-button">Cancel</button>
+                <button class="password-button primary" id="submit-button">Unlock</button>
+            </div>
+            <div class="password-error" id="password-error">Incorrect password. Please try again.</div>
+        </div>
+    </div>
+
+    <script>
+        class LightEffect {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.mouse = { x: 0, y: 0, isMoving: false };
+                this.lastMouse = { x: 0, y: 0 };
+                this.lightTrails = [];
+                this.time = 0;
+                this.noiseCanvas = document.createElement('canvas');
+                this.noiseCanvas.width = 200;
+                this.noiseCanvas.height = 200;
+                this.noiseCtx = this.noiseCanvas.getContext('2d');
+                this.init();
+                this.setupEventListeners();
+                this.animate();
+            }
+
+            init() {
+                this.resizeCanvas();
+            }
+
+            resizeCanvas() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+
+            setupEventListeners() {
+                const canvas = this.canvas;
+
+                // Mouse events
+                canvas.addEventListener('mousemove', (e) => {
+                    this.mouse.x = e.clientX;
+                    this.mouse.y = e.clientY;
+                    this.mouse.isMoving = true;
+                    
+                    // Add to light trails
+                    this.addLightTrail(e.clientX, e.clientY);
+                });
+
+                canvas.addEventListener('mouseleave', () => {
+                    this.mouse.isMoving = false;
+                });
+
+                // Touch events
+                canvas.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                    const touch = e.touches[0];
+                    this.mouse.x = touch.clientX;
+                    this.mouse.y = touch.clientY;
+                    this.mouse.isMoving = true;
+                    
+                    this.addLightTrail(touch.clientX, touch.clientY);
+                });
+
+                canvas.addEventListener('touchend', () => {
+                    this.mouse.isMoving = false;
+                });
+
+                window.addEventListener('resize', () => {
+                    this.resizeCanvas();
+                });
+            }
+
+            addLightTrail(x, y) {
+                this.lightTrails.push({
+                    x: x,
+                    y: y,
+                    life: 0.5,
+                    decay: 0.08,
+                    size: 180 + Math.random() * 60
+                });
+            }
+
+            updateLightTrails() {
+                for (let i = this.lightTrails.length - 1; i >= 0; i--) {
+                    const trail = this.lightTrails[i];
+                    trail.life -= trail.decay;
+                    
+                    if (trail.life <= 0) {
+                        this.lightTrails.splice(i, 1);
+                    }
+                }
+            }
+
+            drawNoiseOverlay() {
+                const w = this.noiseCanvas.width;
+                const h = this.noiseCanvas.height;
+                const imageData = this.noiseCtx.createImageData(w, h);
+                for (let i = 0; i < w * h * 4; i += 4) {
+                    const v = Math.floor(Math.random() * 60 + 195); // mostly bright, some dark
+                    imageData.data[i] = v;
+                    imageData.data[i+1] = v;
+                    imageData.data[i+2] = v;
+                    imageData.data[i+3] = Math.floor(Math.random() * 60 + 30); // alpha
+                }
+                this.noiseCtx.putImageData(imageData, 0, 0);
+                this.ctx.save();
+                this.ctx.globalAlpha = 0.14;
+                this.ctx.globalCompositeOperation = 'lighter';
+                for (let x = 0; x < this.canvas.width; x += w) {
+                    for (let y = 0; y < this.canvas.height; y += h) {
+                        this.ctx.drawImage(this.noiseCanvas, x, y);
+                    }
+                }
+                this.ctx.globalAlpha = 1.0;
+                this.ctx.globalCompositeOperation = 'source-over';
+                this.ctx.restore();
+            }
+
+            drawLightEffect() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Create subtle gradient background
+                const gradient = this.ctx.createRadialGradient(
+                    this.canvas.width / 2, this.canvas.height / 2, 0,
+                    this.canvas.width / 2, this.canvas.height / 2, Math.max(this.canvas.width, this.canvas.height) / 2
+                );
+                gradient.addColorStop(0, 'rgba(26, 26, 26, 1)');
+                gradient.addColorStop(1, 'rgba(10, 10, 10, 1)');
+                this.ctx.fillStyle = gradient;
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw light trails (spotlight effect)
+                this.lightTrails.forEach(trail => {
+                    const alpha = trail.life * 0.3;
+                    const size = trail.size * trail.life;
+                    
+                    // Create radial gradient for spotlight effect
+                    const spotlightGradient = this.ctx.createRadialGradient(
+                        trail.x, trail.y, 0,
+                        trail.x, trail.y, size
+                    );
+                    
+                    // Fuzzy, diffuse, brighter glow
+                    spotlightGradient.addColorStop(0, `rgba(255, 255, 255, ${alpha * 0.28})`);
+                    spotlightGradient.addColorStop(0.4, `rgba(180, 200, 255, ${alpha * 0.14})`);
+                    spotlightGradient.addColorStop(0.8, `rgba(120, 160, 255, ${alpha * 0.06})`);
+                    spotlightGradient.addColorStop(1, 'rgba(100, 140, 255, 0)');
+                    
+                    this.ctx.fillStyle = spotlightGradient;
+                    this.ctx.beginPath();
+                    this.ctx.arc(trail.x, trail.y, size, 0, Math.PI * 2);
+                    this.ctx.fill();
+                });
+                
+                // Draw current mouse position with stronger spotlight
+                if (this.mouse.isMoving) {
+                    const currentSize = 220;
+                    // Main fuzzy spotlight at current position
+                    const mainSpotlight = this.ctx.createRadialGradient(
+                        this.mouse.x, this.mouse.y, 0,
+                        this.mouse.x, this.mouse.y, currentSize
+                    );
+                    mainSpotlight.addColorStop(0, 'rgba(255,255,255,0.32)');
+                    mainSpotlight.addColorStop(0.5, 'rgba(180,200,255,0.16)');
+                    mainSpotlight.addColorStop(1, 'rgba(140,160,255,0)');
+                    this.ctx.fillStyle = mainSpotlight;
+                    this.ctx.beginPath();
+                    this.ctx.arc(this.mouse.x, this.mouse.y, currentSize, 0, Math.PI * 2);
+                    this.ctx.fill();
+                }
+
+                // Add grain/noise overlay
+                this.drawNoiseOverlay();
+            }
+
+            animate() {
+                this.time += 0.016;
+                this.updateLightTrails();
+                this.drawLightEffect();
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        // Initialize light effect
+        const canvas = document.getElementById('light-canvas');
+        if (canvas) {
+            new LightEffect(canvas);
+        }
+
+        // Scroll functionality for enter room section
+        document.addEventListener('DOMContentLoaded', function() {
+            const enterRoomSection = document.querySelector('.enter-room-section');
+            const scrollIndicator = document.querySelector('.scroll-indicator');
+            const contentOverlay = document.querySelector('.content-overlay');
+            const backgroundFade = document.querySelector('.background-fade');
+            
+            // Set body height to enable scrolling
+            document.body.style.height = '200vh';
+            
+            function handleScroll() {
+                const scrollY = window.scrollY;
+                const windowHeight = window.innerHeight;
+                const threshold = windowHeight * 0.3; // Show section when 30% down
+                
+                // Fade out scroll indicator gradually as soon as scrolling starts
+                const fadeStart = 0;
+                const fadeEnd = windowHeight * 0.2; // Fully faded by 20% scroll
+                const fadeProgress = Math.min(Math.max((scrollY - fadeStart) / (fadeEnd - fadeStart), 0), 1);
+                const scrollIndicatorOpacity = 0.6 * (1 - fadeProgress);
+                scrollIndicator.style.opacity = scrollIndicatorOpacity;
+
+                // Hide scroll indicator completely when hero section is faded out
+                if (scrollY > threshold) {
+                    enterRoomSection.classList.add('visible');
+                    contentOverlay.classList.add('fade-out');
+                    backgroundFade.classList.add('visible');
+                    scrollIndicator.classList.add('hide');
+                } else {
+                    enterRoomSection.classList.remove('visible');
+                    contentOverlay.classList.remove('fade-out');
+                    backgroundFade.classList.remove('visible');
+                    scrollIndicator.classList.remove('hide');
+                }
+            }
+            
+            // Add scroll event listener
+            window.addEventListener('scroll', handleScroll);
+            
+            // Handle enter room button click
+            const enterRoomButton = document.querySelector('.enter-room-button');
+            if (enterRoomButton) {
+                enterRoomButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showPasswordModal();
+                });
+            }
+
+            // Password modal functionality
+            const passwordModal = document.querySelector('.password-modal');
+            const passwordInput = document.getElementById('password-input');
+            const submitButton = document.getElementById('submit-button');
+            const cancelButton = document.getElementById('cancel-button');
+            const passwordError = document.getElementById('password-error');
+
+            function showPasswordModal() {
+                passwordModal.classList.add('visible');
+                passwordInput.focus();
+                // Prevent body scroll when modal is open
+                document.body.style.overflow = 'hidden';
+            }
+
+            function hidePasswordModal() {
+                passwordModal.classList.remove('visible');
+                passwordInput.value = '';
+                passwordError.classList.remove('visible');
+                // Restore body scroll
+                document.body.style.overflow = 'auto';
+            }
+
+            function checkPassword() {
+                const password = passwordInput.value.trim();
+                // You can set your desired password here
+                const correctPassword = 'rieche2024'; // Change this to your desired password
+                
+                if (password === correctPassword) {
+                    hidePasswordModal();
+                    // Add your room entry logic here
+                    console.log('Password correct! Entering the room...');
+                    // You can redirect to another page or trigger an animation
+                    // window.location.href = 'room-experience.html';
+                } else {
+                    passwordError.classList.add('visible');
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+            }
+
+            // Event listeners for password modal
+            submitButton.addEventListener('click', checkPassword);
+            
+            cancelButton.addEventListener('click', hidePasswordModal);
+            
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+
+            // Close modal when clicking outside
+            passwordModal.addEventListener('click', function(e) {
+                if (e.target === passwordModal) {
+                    hidePasswordModal();
+                }
+            });
+
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && passwordModal.classList.contains('visible')) {
+                    hidePasswordModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

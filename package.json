@@ -1,0 +1,26 @@
+{
+  "name": "rieche-secure-room",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static site - no build needed'"
+  },
+  "description": "",
+  "main": "api:auth.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shurreyy/riechestudio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shurreyy/riechestudio/issues"
+  },
+  "homepage": "https://github.com/shurreyy/riechestudio#readme"
+}

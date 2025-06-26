@@ -64,7 +64,7 @@
             cursor: crosshair;
         }
 
-        /* Light effect canvas */
+        /* Light effect canvas - FIXED: Position fixed to stay in viewport */
         #light-canvas {
             position: fixed;
             top: 0;
@@ -72,6 +72,7 @@
             width: 100vw;
             height: 100vh;
             z-index: 0;
+            pointer-events: none; /* Allow interactions with elements behind */
         }
 
         /* Navigation */
@@ -196,14 +197,14 @@
             opacity: 1;
         }
 
-        /* Enter Room Section */
+        /* Enter Room Section - FIXED: Removed solid background */
         .enter-room-section {
             position: fixed;
             top: 100vh;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            background: transparent; /* Changed from solid gradient to transparent */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -228,6 +229,12 @@
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+            /* Add a subtle backdrop for text readability */
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
         }
 
         .enter-room-section.visible .enter-room-content {
@@ -273,6 +280,7 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            pointer-events: auto; /* Ensure button is clickable */
         }
 
         .enter-room-button::before {
@@ -430,7 +438,7 @@
 
         /* Scroll indicator */
         .scroll-indicator {
-            position: absolute;
+            position: fixed;
             bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
@@ -441,11 +449,12 @@
             z-index: 10;
             pointer-events: none;
             animation: fadeInOut 2s ease-in-out infinite;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
         }
 
         .scroll-indicator.hide {
             opacity: 0 !important;
+            visibility: hidden !important;
             pointer-events: none;
         }
 
@@ -491,18 +500,114 @@
             }
         }
 
-        /* Mobile responsive */
-        @media (max-width: 768px) {
+        /* ===== RESPONSIVE BREAKPOINTS ===== */
+        
+        /* Extra Small Mobile (320px - 480px) */
+        @media (max-width: 480px) {
+            body, html {
+                cursor: auto; /* Remove crosshair on small touch devices */
+            }
+
             .nav-container {
-                padding: 15px 10px;
+                padding: 10px 15px;
             }
+            
             .nav-brand {
-                left: 0;
-                font-size: 18px;
-                padding-left: 0;
+                font-size: 16px;
             }
+            
             .nav-links {
-                gap: 12px;
+                gap: 8px;
+            }
+            
+            .nav-link {
+                font-size: 11px;
+                padding: 4px 8px;
+            }
+            
+            .title {
+                font-size: clamp(32px, 12vw, 60px);
+                margin-bottom: 0.5rem;
+            }
+            
+            .subtitle {
+                font-size: clamp(12px, 4vw, 16px);
+                margin-bottom: 1.5rem;
+            }
+
+            .enter-room-content {
+                padding: 20px 15px;
+                margin: 0 10px;
+            }
+
+            .enter-room-title {
+                font-size: clamp(28px, 10vw, 50px);
+                margin-bottom: 1.5rem;
+            }
+
+            .enter-room-description {
+                font-size: clamp(12px, 4vw, 16px);
+                margin-bottom: 2rem;
+            }
+
+            .enter-room-button {
+                padding: 14px 28px;
+                font-size: 14px;
+                width: 100%;
+                max-width: 250px;
+            }
+
+            .scroll-indicator {
+                font-size: 11px;
+                bottom: 20px;
+            }
+
+            /* Password Modal Adjustments */
+            .password-content {
+                padding: 30px 20px;
+                margin: 0 15px;
+            }
+
+            .password-title {
+                font-size: 24px;
+                margin-bottom: 15px;
+            }
+
+            .password-description {
+                font-size: 14px;
+                margin-bottom: 25px;
+            }
+
+            .password-input {
+                padding: 14px 16px;
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+
+            .password-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .password-button {
+                padding: 12px 20px;
+                width: 100%;
+                font-size: 14px;
+            }
+        }
+
+        /* Small Mobile to Tablet (481px - 768px) */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .nav-container {
+                padding: 15px 20px;
+            }
+            
+            .nav-brand {
+                font-size: 18px;
+            }
+            
+            .nav-links {
+                gap: 10px;
             }
             
             .nav-link {
@@ -511,7 +616,7 @@
             }
             
             .title {
-                font-size: clamp(40px, 8vw, 80px);
+                font-size: clamp(40px, 10vw, 80px);
             }
             
             .subtitle {
@@ -519,7 +624,8 @@
             }
 
             .enter-room-content {
-                padding: 0 20px;
+                padding: 30px 25px;
+                margin: 0 20px;
             }
 
             .enter-room-title {
@@ -539,6 +645,229 @@
             .scroll-indicator {
                 font-size: 12px;
                 bottom: 30px;
+            }
+
+            /* Password Modal */
+            .password-content {
+                padding: 35px 25px;
+            }
+
+            .password-buttons {
+                flex-direction: row;
+            }
+        }
+
+        /* Tablet (769px - 1024px) */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .nav-container {
+                padding: 18px 30px;
+            }
+            
+            .nav-brand {
+                font-size: 20px;
+            }
+            
+            .nav-links {
+                gap: 20px;
+            }
+            
+            .nav-link {
+                font-size: 13px;
+                padding: 7px 14px;
+            }
+            
+            .title {
+                font-size: clamp(60px, 9vw, 100px);
+            }
+            
+            .subtitle {
+                font-size: clamp(16px, 2.5vw, 24px);
+            }
+
+            .enter-room-content {
+                padding: 35px 30px;
+                max-width: 550px;
+            }
+
+            .enter-room-title {
+                font-size: clamp(45px, 7vw, 70px);
+            }
+
+            .enter-room-description {
+                font-size: clamp(16px, 2.2vw, 19px);
+            }
+
+            .enter-room-button {
+                padding: 17px 36px;
+                font-size: 17px;
+            }
+        }
+
+        /* Small Desktop (1025px - 1440px) */
+        @media (min-width: 1025px) and (max-width: 1440px) {
+            .nav-container {
+                padding: 20px 35px;
+            }
+            
+            .nav-brand {
+                font-size: 22px;
+            }
+            
+            .nav-links {
+                gap: 25px;
+            }
+            
+            .nav-link {
+                font-size: 13px;
+                padding: 8px 15px;
+            }
+
+            .enter-room-content {
+                padding: 40px 35px;
+                max-width: 580px;
+            }
+
+            .enter-room-button {
+                padding: 18px 38px;
+                font-size: 17px;
+            }
+        }
+
+        /* Large Desktop (1441px and above) */
+        @media (min-width: 1441px) {
+            .nav-container {
+                padding: 22px 50px;
+            }
+            
+            .nav-brand {
+                font-size: 26px;
+            }
+            
+            .nav-links {
+                gap: 35px;
+            }
+            
+            .nav-link {
+                font-size: 15px;
+                padding: 8px 16px;
+            }
+
+            .title {
+                font-size: clamp(80px, 8vw, 160px);
+            }
+
+            .subtitle {
+                font-size: clamp(20px, 2vw, 32px);
+            }
+
+            .enter-room-content {
+                padding: 45px 40px;
+                max-width: 650px;
+            }
+
+            .enter-room-title {
+                font-size: clamp(60px, 5vw, 90px);
+            }
+
+            .enter-room-description {
+                font-size: clamp(18px, 1.8vw, 22px);
+            }
+
+            .enter-room-button {
+                padding: 20px 45px;
+                font-size: 19px;
+            }
+
+            .scroll-indicator {
+                font-size: 15px;
+                bottom: 50px;
+            }
+        }
+
+        /* Touch Device Optimizations */
+        @media (pointer: coarse) {
+            .enter-room-button {
+                min-height: 44px; /* Ensure touch target is at least 44px */
+                min-width: 44px;
+            }
+
+            .nav-link {
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .password-button {
+                min-height: 44px;
+            }
+
+            .password-input {
+                min-height: 44px;
+            }
+        }
+
+        /* High DPI Displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+            .title, .enter-room-title {
+                text-rendering: optimizeLegibility;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+        }
+
+        /* Landscape Mobile Orientation */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .title {
+                font-size: clamp(30px, 8vw, 60px);
+            }
+
+            .subtitle {
+                font-size: clamp(12px, 3vw, 18px);
+                margin-bottom: 1rem;
+            }
+
+            .enter-room-title {
+                font-size: clamp(28px, 6vw, 50px);
+                margin-bottom: 1rem;
+            }
+
+            .enter-room-description {
+                font-size: clamp(12px, 3vw, 16px);
+                margin-bottom: 1.5rem;
+            }
+
+            .scroll-indicator {
+                bottom: 15px;
+                font-size: 11px;
+            }
+        }
+
+        /* Reduced Motion Preference */
+        @media (prefers-reduced-motion: reduce) {
+            .title {
+                animation: none;
+            }
+
+            .scroll-indicator {
+                animation: none;
+            }
+
+            .scroll-indicator::after {
+                animation: none;
+            }
+
+            .enter-room-button::before {
+                transition: none;
+            }
+
+            .content-overlay, .enter-room-content, .password-content {
+                transition: opacity 0.3s ease;
+                transform: none !important;
+            }
+
+            .enter-room-section {
+                transition: transform 0.3s ease, opacity 0.3s ease;
             }
         }
     </style>
@@ -617,53 +946,99 @@
 
             resizeCanvas() {
                 this.canvas.width = window.innerWidth;
-                this.canvas.height = window.innerHeight;
+                this.canvas.height = window.innerHeight; // Fixed viewport height only
             }
 
             setupEventListeners() {
                 const canvas = this.canvas;
+                let isTouch = false;
 
-                // Mouse events
-                canvas.addEventListener('mousemove', (e) => {
-                    this.mouse.x = e.clientX;
-                    this.mouse.y = e.clientY;
-                    this.mouse.isMoving = true;
-                    
-                    // Add to light trails
-                    this.addLightTrail(e.clientX, e.clientY);
+                // Detect if device supports touch
+                const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+                // Mouse events - FIXED: No scroll offset needed since canvas is fixed
+                document.addEventListener('mousemove', (e) => {
+                    if (!isTouch) { // Only handle mouse events if not currently touching
+                        this.mouse.x = e.clientX;
+                        this.mouse.y = e.clientY; // No scroll offset needed
+                        this.mouse.isMoving = true;
+                        
+                        // Add to light trails
+                        this.addLightTrail(e.clientX, e.clientY);
+                    }
                 });
 
-                canvas.addEventListener('mouseleave', () => {
-                    this.mouse.isMoving = false;
+                document.addEventListener('mouseleave', () => {
+                    if (!isTouch) {
+                        this.mouse.isMoving = false;
+                    }
                 });
 
-                // Touch events
-                canvas.addEventListener('touchmove', (e) => {
-                    e.preventDefault();
+                // Touch events - FIXED: No scroll offset needed since canvas is fixed
+                document.addEventListener('touchstart', (e) => {
+                    isTouch = true;
                     const touch = e.touches[0];
                     this.mouse.x = touch.clientX;
-                    this.mouse.y = touch.clientY;
+                    this.mouse.y = touch.clientY; // No scroll offset needed
                     this.mouse.isMoving = true;
                     
                     this.addLightTrail(touch.clientX, touch.clientY);
+                }, { passive: true });
+
+                document.addEventListener('touchmove', (e) => {
+                    if (e.touches.length === 1) { // Only handle single touch to avoid conflicts with scrolling
+                        const touch = e.touches[0];
+                        this.mouse.x = touch.clientX;
+                        this.mouse.y = touch.clientY; // No scroll offset needed
+                        this.mouse.isMoving = true;
+                        
+                        this.addLightTrail(touch.clientX, touch.clientY);
+                    }
+                }, { passive: true });
+
+                document.addEventListener('touchend', () => {
+                    this.mouse.isMoving = false;
+                    // Reset touch flag after a short delay to allow mouse events again
+                    setTimeout(() => {
+                        isTouch = false;
+                    }, 100);
                 });
 
-                canvas.addEventListener('touchend', () => {
-                    this.mouse.isMoving = false;
+                // Handle orientation changes on mobile
+                window.addEventListener('orientationchange', () => {
+                    setTimeout(() => {
+                        this.resizeCanvas();
+                    }, 100);
                 });
 
                 window.addEventListener('resize', () => {
                     this.resizeCanvas();
                 });
+
+                // Handle visibility changes to pause/resume animation
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) {
+                        this.mouse.isMoving = false;
+                    }
+                });
             }
 
             addLightTrail(x, y) {
+                // Reduce light trails on mobile for better performance
+                const isMobile = window.innerWidth <= 768;
+                const maxTrails = isMobile ? 15 : 25;
+                
+                // Remove oldest trails if we have too many
+                if (this.lightTrails.length >= maxTrails) {
+                    this.lightTrails.shift();
+                }
+
                 this.lightTrails.push({
                     x: x,
                     y: y,
-                    life: 0.5,
-                    decay: 0.08,
-                    size: 180 + Math.random() * 60
+                    life: isMobile ? 0.4 : 0.5, // Shorter life on mobile
+                    decay: isMobile ? 0.1 : 0.08, // Faster decay on mobile
+                    size: (isMobile ? 140 : 180) + Math.random() * (isMobile ? 40 : 60)
                 });
             }
 
@@ -679,8 +1054,21 @@
             }
 
             drawNoiseOverlay() {
-                const w = this.noiseCanvas.width;
-                const h = this.noiseCanvas.height;
+                // Reduce noise density on mobile for better performance
+                const isMobile = window.innerWidth <= 768;
+                const w = isMobile ? 100 : this.noiseCanvas.width;
+                const h = isMobile ? 100 : this.noiseCanvas.height;
+                
+                // Only update noise every few frames on mobile
+                if (isMobile && this.time % 0.1 !== 0) {
+                    return;
+                }
+
+                if (this.noiseCanvas.width !== w || this.noiseCanvas.height !== h) {
+                    this.noiseCanvas.width = w;
+                    this.noiseCanvas.height = h;
+                }
+
                 const imageData = this.noiseCtx.createImageData(w, h);
                 for (let i = 0; i < w * h * 4; i += 4) {
                     const v = Math.floor(Math.random() * 60 + 195); // mostly bright, some dark
@@ -691,7 +1079,7 @@
                 }
                 this.noiseCtx.putImageData(imageData, 0, 0);
                 this.ctx.save();
-                this.ctx.globalAlpha = 0.14;
+                this.ctx.globalAlpha = isMobile ? 0.1 : 0.14; // Less noise on mobile
                 this.ctx.globalCompositeOperation = 'lighter';
                 for (let x = 0; x < this.canvas.width; x += w) {
                     for (let y = 0; y < this.canvas.height; y += h) {
@@ -762,8 +1150,16 @@
 
             animate() {
                 this.time += 0.016;
-                this.updateLightTrails();
-                this.drawLightEffect();
+                
+                // Reduce frame rate on mobile for better performance
+                const isMobile = window.innerWidth <= 768;
+                const frameSkip = isMobile ? 2 : 1; // Skip every other frame on mobile
+                
+                if (!isMobile || this.time % (0.016 * frameSkip) < 0.016) {
+                    this.updateLightTrails();
+                    this.drawLightEffect();
+                }
+                
                 requestAnimationFrame(() => this.animate());
             }
         }
@@ -789,24 +1185,24 @@
                 const windowHeight = window.innerHeight;
                 const threshold = windowHeight * 0.3; // Show section when 30% down
                 
-                // Fade out scroll indicator gradually as soon as scrolling starts
-                const fadeStart = 0;
-                const fadeEnd = windowHeight * 0.2; // Fully faded by 20% scroll
-                const fadeProgress = Math.min(Math.max((scrollY - fadeStart) / (fadeEnd - fadeStart), 0), 1);
-                const scrollIndicatorOpacity = 0.6 * (1 - fadeProgress);
-                scrollIndicator.style.opacity = scrollIndicatorOpacity;
+                // Hide scroll indicator much earlier - as soon as user starts scrolling meaningfully
+                const hideIndicatorThreshold = 50; // Hide after just 50px of scroll
+                
+                if (scrollY > hideIndicatorThreshold) {
+                    scrollIndicator.classList.add('hide');
+                } else {
+                    scrollIndicator.classList.remove('hide');
+                }
 
-                // Hide scroll indicator completely when hero section is faded out
+                // Handle main content transitions
                 if (scrollY > threshold) {
                     enterRoomSection.classList.add('visible');
                     contentOverlay.classList.add('fade-out');
                     backgroundFade.classList.add('visible');
-                    scrollIndicator.classList.add('hide');
                 } else {
                     enterRoomSection.classList.remove('visible');
                     contentOverlay.classList.remove('fade-out');
                     backgroundFade.classList.remove('visible');
-                    scrollIndicator.classList.remove('hide');
                 }
             }
             
@@ -844,21 +1240,76 @@
                 document.body.style.overflow = 'auto';
             }
 
-            function checkPassword() {
+            async function checkPassword() {
                 const password = passwordInput.value.trim();
-                // You can set your desired password here
-                const correctPassword = 'rieche2024'; // Change this to your desired password
                 
-                if (password === correctPassword) {
-                    hidePasswordModal();
-                    // Add your room entry logic here
-                    console.log('Password correct! Entering the room...');
-                    // You can redirect to another page or trigger an animation
-                    // window.location.href = 'room-experience.html';
-                } else {
+                if (!password) {
+                    passwordError.textContent = 'Please enter a password';
+                    passwordError.classList.add('visible');
+                    return;
+                }
+
+                // Disable button during request
+                submitButton.disabled = true;
+                submitButton.textContent = 'Checking...';
+
+                try {
+                    const response = await fetch('/api/auth', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ password }),
+                        credentials: 'include' // Important: include cookies
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        // Success! Hide modal and redirect
+                        hidePasswordModal();
+                        
+                        // Small delay for better UX
+                        setTimeout(() => {
+                            window.location.href = '/secure-room.html';
+                        }, 300);
+                        
+                    } else {
+                        // Show error message
+                        passwordError.textContent = data.error || 'Invalid password';
+                        passwordError.classList.add('visible');
+                        passwordInput.value = '';
+                        passwordInput.focus();
+                    }
+
+                } catch (error) {
+                    console.error('Authentication error:', error);
+                    passwordError.textContent = 'Connection error. Please try again.';
                     passwordError.classList.add('visible');
                     passwordInput.value = '';
-                    passwordInput.focus();
+                } finally {
+                    // Re-enable button
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Unlock';
+                }
+            }
+
+            // Add this function to check if user is already authenticated
+            async function checkExistingAuth() {
+                try {
+                    // Try to access the secure area directly
+                    const response = await fetch('/secure-room.html', {
+                        method: 'HEAD',
+                        credentials: 'include'
+                    });
+                    
+                    if (response.ok) {
+                        // User is already authenticated, could show a different message
+                        console.log('User already has access');
+                    }
+                } catch (error) {
+                    // User not authenticated, which is expected
+                    console.log('User not authenticated');
                 }
             }
 
@@ -886,7 +1337,14 @@
                     hidePasswordModal();
                 }
             });
+
+            // Call this when page loads
+            const originalDOMContentLoaded = document.onreadystatechange;
+            document.addEventListener('DOMContentLoaded', function() {
+                checkExistingAuth();
+                // Your existing DOMContentLoaded code here...
+            });
         });
     </script>
 </body>
-</html> 
+</html>

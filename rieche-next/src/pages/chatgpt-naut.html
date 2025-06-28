@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nautilus Spiral</title>
+  <style>
+    body { background: #fdfdf9; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    canvas { border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+<canvas id="spiral" width="600" height="600"></canvas>
+
+<script>
+  const canvas = document.getElementById('spiral');
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width;
+  const h = canvas.height;
+  ctx.translate(w / 2, h / 2);
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 0.5;
+
+  function drawSpiral() {
+    const a = 1;
+    const b = 0.15;
+    const turns = 10;
+    const steps = 2000;
+
+    for (let i = 0; i < steps; i++) {
+      const theta = i * 0.05;
+      const r = a * Math.exp(b * theta);
+      const x = r * Math.cos(theta);
+      const y = r * Math.sin(theta);
+
+      const nextTheta = theta + 0.05;
+      const nextR = a * Math.exp(b * nextTheta);
+      const nextX = nextR * Math.cos(nextTheta);
+      const nextY = nextR * Math.sin(nextTheta);
+
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(nextX, nextY);
+      ctx.stroke();
+    }
+  }
+
+  drawSpiral();
+</script>
+</body>
+</html>

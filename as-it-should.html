@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>As It Should | RIECHE Pilates Studio</title>
+    
+    <!-- SEO Meta -->
+    <meta name="description" content="Experience sacred geometry in motion - a meditative journey through timeless patterns and divine proportions at RIECHE Pilates Studio.">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="As It Should | RIECHE Pilates Studio">
+    <meta property="og:description" content="Experience sacred geometry in motion - a meditative journey through timeless patterns.">
+    <meta property="og:type" content="website">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* The Seasons Font */
+        @font-face {
+            font-family: 'The Seasons';
+            src: url('/public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788-webfont.woff2') format('woff2'),
+                 url('/public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788-webfont.woff') format('woff'),
+                 url('/public/assets/fonts/theseasons-reg.57d3e9b5285fa8dfd595ef780.57981c5d6c03cd30856912da5d26c788.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            background: #0a0a0a;
+            color: white;
+        }
+
+        /* Sacred Geometry Canvas */
+        #sacred-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        /* Navigation */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .nav-brand {
+            font-family: 'The Seasons', 'Playfair Display', serif;
+            font-size: 24px;
+            color: white;
+            text-decoration: none;
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+
+        .nav-link:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Content */
+        .content-container {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 40px 40px;
+        }
+
+        .main-content {
+            max-width: 800px;
+        }
+
+        .title {
+            font-family: 'The Seasons', 'Playfair Display', serif;
+            font-size: clamp(60px, 10vw, 140px);
+            font-weight: 400;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            line-height: 0.9;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 50%, #e0e0e0 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            animation: textGlow 4s ease-in-out infinite alternate;
+        }
+
+        .subtitle {
+            font-size: clamp(18px, 2.5vw, 28px);
+            opacity: 0.8;
+            font-weight: 300;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+        }
+
+        .description {
+            font-size: clamp(16px, 2vw, 20px);
+            opacity: 0.7;
+            font-weight: 300;
+            line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Controls */
+        .controls {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 50;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .control-btn.active {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Animations */
+        @keyframes textGlow {
+            from {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            }
+            to {
+                text-shadow: 0 0 40px rgba(255, 255, 255, 0.4), 0 0 60px rgba(144, 142, 244, 0.2);
+            }
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 15px 20px;
+            }
+            
+            .nav-brand {
+                font-size: 18px;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .nav-link {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+            
+            .content-container {
+                padding: 80px 20px 20px;
+            }
+            
+            .controls {
+                bottom: 20px;
+                gap: 15px;
+            }
+            
+            .control-btn {
+                padding: 10px 16px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="sacred-canvas"></canvas>
+    
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div class="nav-content">
+            <a href="index.html" class="nav-brand">RIECHE</a>
+            <div class="nav-links">
+                <a href="philosophy.html" class="nav-link">Philosophy</a>
+                <a href="quiz.html" class="nav-link">Quiz</a>
+                <a href="building-rieche.html" class="nav-link">Building RIECHE</a>
+                <a href="the-room.html" class="nav-link">The Room</a>
+                <a href="as-it-should.html" class="nav-link active">As It Should</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="content-container">
+        <div class="main-content">
+            <h1 class="title">As It Should</h1>
+            <p class="subtitle">Sacred geometry in motion</p>
+            <p class="description">
+                Witness the divine proportions that underlie all creation. 
+                These patterns have guided humanity's understanding of beauty, 
+                harmony, and the fundamental structure of reality for millennia.
+            </p>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <button class="control-btn active" onclick="setPattern('flower')">Flower of Life</button>
+        <button class="control-btn" onclick="setPattern('metatron')">Metatron's Cube</button>
+        <button class="control-btn" onclick="setPattern('seed')">Seed of Life</button>
+        <button class="control-btn" onclick="setPattern('vesica')">Vesica Piscis</button>
+        <button class="control-btn" onclick="setPattern('spiral')">Golden Spiral</button>
+    </div>
+
+    <script>
+        // --- Sacred Geometry Tracing Animation (Curved, Auto, Loop) ---
+        class TracingCurveGeometry {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.width = window.innerWidth;
+                this.height = window.innerHeight;
+                this.centerX = this.width / 2;
+                this.centerY = this.height / 2;
+                this.radius = Math.min(this.width, this.height) * 0.28;
+                this.points = 1440;
+                this.traceProgress = 0;
+                this.traceSpeed = 2.5;
+                this.phase = 'draw';
+                this.curvePoints = [];
+                this.init();
+                this.animate();
+            }
+
+            init() {
+                this.resizeCanvas();
+                this.generateCurvePoints();
+                window.addEventListener('resize', () => {
+                    this.resizeCanvas();
+                    this.generateCurvePoints();
+                });
+            }
+
+            resizeCanvas() {
+                this.width = window.innerWidth;
+                this.height = window.innerHeight;
+                this.centerX = this.width / 2;
+                this.centerY = this.height / 2;
+                this.radius = Math.min(this.width, this.height) * 0.28;
+                this.canvas.width = this.width;
+                this.canvas.height = this.height;
+            }
+
+            generateCurvePoints() {
+                this.curvePoints = [];
+                const a = 5, b = 7, delta = Math.PI / 2.5;
+                for (let i = 0; i <= this.points; i++) {
+                    const t = (i / this.points) * Math.PI * 2 * b;
+                    const x = this.centerX + this.radius * Math.sin(a * t + delta) * Math.cos(t);
+                    const y = this.centerY + this.radius * Math.sin(b * t);
+                    this.curvePoints.push({ x, y });
+                }
+            }
+
+            drawTracedCurve(progress) {
+                const ctx = this.ctx;
+                ctx.save();
+                ctx.clearRect(0, 0, this.width, this.height);
+                ctx.fillStyle = '#101818';
+                ctx.fillRect(0, 0, this.width, this.height);
+                ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+                ctx.lineWidth = 1.1;
+                ctx.shadowColor = 'white';
+                ctx.shadowBlur = 16;
+                ctx.beginPath();
+                let first = true;
+                for (let i = 0; i < progress - 2; i += 1) {
+                    const p0 = this.curvePoints[i];
+                    const p1 = this.curvePoints[i + 1];
+                    const p2 = this.curvePoints[i + 2];
+                    if (first) {
+                        ctx.moveTo(p0.x, p0.y);
+                        first = false;
+                    }
+                    ctx.quadraticCurveTo(p1.x, p1.y, p2.x, p2.y);
+                }
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            animate() {
+                if (this.phase === 'draw') {
+                    this.traceProgress += this.traceSpeed;
+                    if (this.traceProgress >= this.points) {
+                        this.traceProgress = this.points;
+                        this.phase = 'erase';
+                    }
+                } else if (this.phase === 'erase') {
+                    this.traceProgress -= this.traceSpeed;
+                    if (this.traceProgress <= 0) {
+                        this.traceProgress = 0;
+                        this.phase = 'draw';
+                    }
+                }
+                this.drawTracedCurve(Math.floor(this.traceProgress));
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        // Initialize tracing geometry
+        const canvas = document.getElementById('sacred-canvas');
+        new TracingCurveGeometry(canvas);
+    </script>
+</body>
+</html>

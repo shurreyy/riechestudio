@@ -2,8 +2,8 @@ import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { Play, Pause, RotateCcw, Download, Flower } from 'lucide-react';
 
 const OrchidSpirograph = () => {
-  const canvasRef = useRef(null);
-  const animationRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationRef = useRef<number | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -20,7 +20,7 @@ const OrchidSpirograph = () => {
   });
 
   // Define naturally curved orchid petal shapes with flowing rounded tips (fixed)
-  const getTopSepalPoint = useCallback((u, v) => {
+  const getTopSepalPoint = useCallback((u: number, v: number) => {
     // Top sepal - naturally rounded elliptical tip (longer and properly rounded)
     let width, y;
     
@@ -40,7 +40,7 @@ const OrchidSpirograph = () => {
     return { x, y };
   }, [params.scale]);
 
-  const getLateralSepalPoint = useCallback((u, v, side) => {
+  const getLateralSepalPoint = useCallback((u: number, v: number, side: number) => {
     // Lateral sepals - flowing rounded tips (fix projecting lines)
     const direction = side === 0 ? -1 : 1;
     let width, x;
@@ -61,7 +61,7 @@ const OrchidSpirograph = () => {
     return { x, y };
   }, [params.scale]);
 
-  const getLateralPetalPoint = useCallback((u, v, side) => {
+  const getLateralPetalPoint = useCallback((u: number, v: number, side: number) => {
     // Inner lateral petals - naturally rounded tips (fixed projection bug)
     const angle = side === 0 ? -Math.PI/4 : Math.PI/4;
     let width, localY;
@@ -90,7 +90,7 @@ const OrchidSpirograph = () => {
     };
   }, [params.scale]);
 
-  const getLabellumPoint = useCallback((u, v) => {
+  const getLabellumPoint = useCallback((u: number, v: number) => {
     // Labellum - flowing rounded lip
     let width, y;
     
@@ -116,11 +116,12 @@ const OrchidSpirograph = () => {
     if (!canvas) return;
     
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
     ctx.fillStyle = '#fafafa';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }, []);
 
-  const drawOrchidPetal = useCallback((ctx, centerX, centerY, getPointFunc, progress, additionalParams = {}) => {
+  const drawOrchidPetal = useCallback((ctx: CanvasRenderingContext2D, centerX: number, centerY: number, getPointFunc: (u: number, v: number, ...args: number[]) => {x: number, y: number}, progress: number, additionalParams: Record<string, number> = {}) => {
     const linesToDraw = Math.floor(progress * params.lineCount);
     
     ctx.strokeStyle = params.color;
@@ -157,6 +158,7 @@ const OrchidSpirograph = () => {
     clearCanvas();
     
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     
@@ -176,14 +178,14 @@ const OrchidSpirograph = () => {
     // 4. Labellum (lip) - the distinctive bottom petal
     drawOrchidPetal(ctx, centerX, centerY, getLabellumPoint, progress);
     
-  }, [progress, params, drawOrchidPetal, getTopSepalPoint, getLateralSepalPoint, getLateralPetalPoint, getLabellumPoint, clearCanvas]);
+  }, [progress, drawOrchidPetal, getTopSepalPoint, getLateralSepalPoint, getLateralPetalPoint, getLabellumPoint, clearCanvas]);
 
   const animate = useCallback(() => {
     if (!isDrawing) return;
     
     drawCompleteOrchid();
     
-    let newProgress = progress + params.speed;
+    const newProgress = progress + params.speed;
     
     if (params.autoStop && newProgress >= params.completionThreshold) {
       setIsDrawing(false);

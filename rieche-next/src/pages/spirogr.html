@@ -1,0 +1,25 @@
+<canvas id="spiro" width="500" height="500"></canvas>
+<script>
+  const canvas = document.getElementById('spiro');
+  const ctx = canvas.getContext('2d');
+
+  function drawSpirograph(R, r, d) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.strokeStyle = 'black';
+
+    for (let t = 0; t < Math.PI * 2 * r / gcd(R, r); t += 0.01) {
+      let x = (R - r) * Math.cos(t) + d * Math.cos(((R - r) / r) * t);
+      let y = (R - r) * Math.sin(t) - d * Math.sin(((R - r) / r) * t);
+      ctx.lineTo(250 + x, 250 + y);
+    }
+
+    ctx.stroke();
+  }
+
+  function gcd(a, b) {
+    return b === 0 ? a : gcd(b, a % b);
+  }
+
+  drawSpirograph(100, 35, 65);
+</script>

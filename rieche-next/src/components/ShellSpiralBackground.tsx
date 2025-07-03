@@ -126,8 +126,6 @@ const ShellSpiralBackground: React.FC<ShellSpiralBackgroundProps> = ({
       roughness: 0.3,
       transparent: true,
       opacity: opacity,
-      specular: 0xffffff,
-      shininess: 100
     });
 
     const section = new THREE.Mesh(ellipsoidGeometry, material);
